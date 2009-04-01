@@ -57,10 +57,23 @@ class FEWorldMap {
   //        -90
   void renderGeoPoint(float longitude_x, float latitude_y) 
   {
-    float pointXlong = xpos + ((img_width / 360.0) * (longitude_x + 180));
-    float pointYlat  = ypos + ((img_height / 180.0) * (-1 * (latitude_y - 90)));   //  -90     90 
+    float pointXlong = longToX(longitude_x);
+    float pointYlat  = latToY(latitude_y);  //  -90     90 
     
     stroke(255,0,0);
     point(pointXlong, pointYlat);
+    //arc(pointXlong,pointYlat, Math.abs(longToX(-90.0) - pointXlong), Math.abs(latToY(-90.0) - pointYlat),PI,PI/2) ;
+    //noFill();
+    //arc(pointXlong,pointYlat, 100, 100,0,1) ;
+  }
+  
+  float longToX(float longitude)
+  {
+    return xpos + ((img_width / 360.0) * (longitude + 180));
+  }
+  
+  float latToY(float latitude)
+  {
+    return ypos + ((img_height / 180.0) * (-1 * (latitude - 90)));
   }
 }

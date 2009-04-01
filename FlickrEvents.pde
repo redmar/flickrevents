@@ -33,7 +33,7 @@ void setup() {
     int count = 0;
     for(int j=1; j <= photoList.getPages() && j < 2 ; j++){
       photoList = fe_data.getPhotos(j);
-      for (int i=0; i < photoList.getPerPage(); i++) {
+      for (int i=0; i < 150; i++) {
         Photo photo = (Photo) photoList.get(i);
         GeoData geo = photo.getGeoData();
         if (geo != null){

@@ -37,11 +37,11 @@ class FlickrData
     SearchParameters params = new SearchParameters();
     params.setExtras(true);
     String[] tags = new String[1];
-    tags[0] = "sensation";
+    tags[0] = "dance";
     params.setTags(tags);
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    params.setMinTakenDate(df.parse("2007-7-15"));
-    params.setMaxTakenDate(df.parse("2007-7-16"));
+    params.setMinTakenDate(df.parse("2009-3-01"));
+    params.setMaxTakenDate(df.parse("2009-3-02"));
     params.setHasGeo(true);
     return f.getPhotosInterface().search(params, 500, page);
   }
