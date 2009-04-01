@@ -1,13 +1,15 @@
 //Global global;
 boolean w_event = true;
 FETimeLine fe_timeline;  
-FEWorldMap fe_worldmap;  
+FEWorldMap fe_worldmap;
+FlickrData fe_data;
 float[] points;
 
 void setup() {
 //  createGraphics
   
   // suck in variables
+  /*
   String lines[] = loadStrings("subset.csv");
   points = new float[lines.length*2];
   
@@ -17,12 +19,35 @@ void setup() {
     points[i*2]     = Float.parseFloat(p[0]);
     points[(i*2)+1] = Float.parseFloat(p[1]); 
   }
-  
+  */
   frame.setResizable(true); 
   size(screen.width, screen.height-50);
 
   fe_worldmap = new FEWorldMap();  
-  fe_timeline = new FETimeLine();  
+  fe_timeline = new FETimeLine();
+  try {
+    fe_data = new FlickrData();  
+    PhotoList photoList = fe_data.getPhotos(1);
+    System.out.println(photoList.getTotal());
+    points = new float[1000*2];
+    int count = 0;
+    for(int j=1; j <= photoList.getPages() && j < 2 ; j++){
+      photoList = fe_data.getPhotos(j);
+      for (int i=0; i < photoList.getPerPage(); i++) {
+        Photo photo = (Photo) photoList.get(i);
+        GeoData geo = photo.getGeoData();
+        if (geo != null){
+          count++;
+          points[i*2]     = geo.getLatitude()+(i/20.0);
+          points[(i*2)+1] = geo.getLongitude(); 
+        }
+      }
+      
+      //System.out.println(count);
+    }
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
   
   frameRate(60);
   
