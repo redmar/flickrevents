@@ -3,6 +3,8 @@ boolean w_event = true;
 FETimeLine fe_timeline;  
 FEWorldMap fe_worldmap;
 FlickrData fe_data;
+FEPhotoGroup pg;  //tmp
+FEPhoto photo;    // tmp
 float[] points;
 
 void setup() {
@@ -20,13 +22,38 @@ void setup() {
     points[(i*2)+1] = Float.parseFloat(p[1]); 
   }
   */
+  smooth();
+  colorMode(RGB, 1.0);
+
   frame.setResizable(true); 
   size(screen.width, screen.height-50);
+
+  pg = new FEPhotoGroup(200,200,30);
+  photo = new FEPhoto(this);
 
   fe_worldmap = new FEWorldMap();  
   fe_timeline = new FETimeLine();
   try {
-    fe_data = new FlickrData();  
+    //*
+    fe_data = new FlickrData("dance", 1, fe_worldmap);
+    PhotoList photoList = fe_data.getPhotos(1);
+    
+    for(int i = 1; i <= photoList.getPages(); i++) {
+      Thread thread = new Thread(new FlickrData("dance", i, fe_worldmap), "thread " + i);
+      thread.start();
+    }
+    
+    fe_data = new FlickrData("classic", 1, fe_worldmap);
+    photoList = fe_data.getPhotos(1);
+    
+    for(int i = 1; i <= photoList.getPages(); i++) {
+      Thread thread = new Thread(new FlickrData("classic", i, fe_worldmap), "thread " + i);
+      thread.start();
+    }
+    //*/
+    
+    /*
+    fe_data = new FlickrData("dance",1);  
     PhotoList photoList = fe_data.getPhotos(1);
     System.out.println(photoList.getTotal());
     points = new float[1000*2];
@@ -37,19 +64,20 @@ void setup() {
         Photo photo = (Photo) photoList.get(i);
         GeoData geo = photo.getGeoData();
         if (geo != null){
-          count++;
-          points[i*2]     = geo.getLatitude()+(i/20.0);
-          points[(i*2)+1] = geo.getLongitude(); 
+          fe_worldmap.addPhoto(photo);
+//          count++;
+//          points[i*2]     = geo.getLatitude()+(i/20.0);
+//          points[(i*2)+1] = geo.getLongitude(); 
         }
       }
-      
-      //System.out.println(count);
     }
+    //*/
+      //System.out.println(count);
   } catch (Exception e) {
     e.printStackTrace();
   }
   
-  frameRate(60);
+  frameRate(24);
   
   frame.addComponentListener(new ComponentAdapter() {
     public void componentResized(ComponentEvent e) {
@@ -63,21 +91,27 @@ void setup() {
 }
 
 void draw() {
-  background(102);
+  background(0);
 
   fe_worldmap.step();
   fe_worldmap.render();
+  pg.render();
 
-  if(w_event) {
-     for (int i=0; i < points.length/2; i++) {
-      fe_worldmap.renderGeoPoint(points[(i*2)+1],points[i*2]);
-    }
-//    fe_worldmap.renderGeoPoint(4.895976, 52.369370); // adam
-//    fe_worldmap.renderGeoPoint(-73.986951, 40.756054);  // ny
-  }
+  photo.step().render();
+  
+//  if(w_event) {
+//     for (int i=0; i < points.length/2; i++) {
+//      fe_worldmap.renderGeoPoint(points[(i*2)+1],points[i*2]);
+//    }
+//  }
 
   fe_timeline.step();
   fe_timeline.render();
+}
+
+void mouseClicked() {
+  System.out.println("click");
+  fe_worldmap.processMouseClick(mouseX, mouseY);
 }
 
 void keyPressed(){

@@ -4,48 +4,83 @@ class FEWorldMap {
   float ypos;
   float drag = 30.0;
   float img_width, img_height;
-
+  Vector photoGroups;
+  
   FEWorldMap() {
     img = loadImage("map.png");  // Load the image into the program  
     img_width = width/2;
     img_height = height/2;
     xpos = (width/2)-(img_width/2);
     ypos = (height/2)-(img_height/2);
+    photoGroups = new Vector();
+  }
+  
+  public synchronized void addPhotoSync(Photo p){
+    addPhoto(p);
+  }
+
+  // walk each photogroup if we're inside a given radius add it to that group
+  void addPhoto(Photo p) {
+    boolean added = false;
+    for (int i=0; i < photoGroups.size(); i++) {
+      GeoData geo = p.getGeoData();
+      if( ((FEPhotoGroup)photoGroups.get(i)).is_inside(geo.getLongitude(), geo.getLatitude()) ) { ((FEPhotoGroup)photoGroups.get(i)).addPhoto(p); added = true;}
+    }
+    if(!added) {
+      // create new photogroup and put this image in it!
+      FEPhotoGroup newPhotoGroup = new FEPhotoGroup();
+      newPhotoGroup.addPhoto(p);
+      photoGroups.add(newPhotoGroup);
+    }
+  }
+  
+  void processMouseClick(float mx, float my) {
+    for (int i=0; i < photoGroups.size(); i++) {
+      if( ((FEPhotoGroup)photoGroups.get(i)).mouse_inside(mx,my, this) ) {
+        System.out.println("INSIDE " + ((FEPhotoGroup)photoGroups.get(i)));
+        ((FEPhotoGroup)photoGroups.get(i)).toggleShowPhotos();
+      }
+    }    
   }
 
   void step() {
-//    img_width = width*0.9;
-//    img_height = height*0.8;
-//    xpos = (width/2)-(width*0.9/2);
-//    ypos = (height/2)-(height*0.8/2);
+//    float difw = (width*0.9) - img_width;
+//    if(abs(difw) > 1.0) {
+//      img_width = img_width + difw/drag;
+//    }  
+//
+//    float difh = (height*0.8) - img_height;
+//    if(abs(difh) > 1.0) {
+//      img_height = img_height + difh/drag;
+//    }  
+//
+//    float difx = (width/2)-(img_width/2) - xpos;
+//    if(abs(difx) > 1.0) {
+//      xpos = xpos + difx/drag;
+//      xpos = constrain(xpos, 0, (width/2)+(img_width/2));
+//    }  
+//  
+//    float dify = (height/2)-(img_height/2) - ypos;
+//    if(abs(dify) > 1.0) {
+//      ypos = ypos + dify/drag;
+//      ypos = constrain(ypos, 0, (height/2)+(img_height));
+//    }  
 
-    float difw = (width*0.9) - img_width;
-    if(abs(difw) > 1.0) {
-      img_width = img_width + difw/drag;
-    }  
-
-    float difh = (height*0.8) - img_height;
-    if(abs(difh) > 1.0) {
-      img_height = img_height + difh/drag;
-    }  
-
-    float difx = (width/2)-(img_width/2) - xpos;
-    if(abs(difx) > 1.0) {
-      xpos = xpos + difx/drag;
-      xpos = constrain(xpos, 0, (width/2)+(img_width/2));
-    }  
-  
-    float dify = (height/2)-(img_height/2) - ypos;
-    if(abs(dify) > 1.0) {
-      ypos = ypos + dify/drag;
-      ypos = constrain(ypos, 0, (height/2)+(img_height));
-    }  
+    img_width = width*0.7;
+    img_height = height*0.8;
+    xpos = (width*0.05);
+    ypos = (height*0.1);
   }
 
   void render() {
     // Displays the image at point (100, 0) at half of its size
     image(img, xpos, ypos, img_width, img_height);
+    // render all the children (dots/photos etc)
+    
 //    renderGeoPoint();
+    for (int i=0; i < photoGroups.size(); i++) {
+      ((FEPhotoGroup)photoGroups.get(i)).render(this);
+    }
   }
   
   // equirectangular projection!
