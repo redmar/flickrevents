@@ -3,6 +3,8 @@ boolean w_event = true;
 FETimeLine fe_timeline;  
 FEWorldMap fe_worldmap;
 FlickrData fe_data;
+FEPhotoGroup pg;  //tmp
+FEPhoto photo;    // tmp
 float[] points;
 
 void setup() {
@@ -20,8 +22,14 @@ void setup() {
     points[(i*2)+1] = Float.parseFloat(p[1]); 
   }
   */
+  smooth();
+  colorMode(RGB, 1.0);
+
   frame.setResizable(true); 
   size(screen.width, screen.height-50);
+
+  pg = new FEPhotoGroup(200,200,30);
+  photo = new FEPhoto(this);
 
   fe_worldmap = new FEWorldMap();  
   fe_timeline = new FETimeLine();
@@ -37,9 +45,10 @@ void setup() {
         Photo photo = (Photo) photoList.get(i);
         GeoData geo = photo.getGeoData();
         if (geo != null){
-          count++;
-          points[i*2]     = geo.getLatitude()+(i/20.0);
-          points[(i*2)+1] = geo.getLongitude(); 
+          fe_worldmap.addPhoto(photo);
+//          count++;
+//          points[i*2]     = geo.getLatitude()+(i/20.0);
+//          points[(i*2)+1] = geo.getLongitude(); 
         }
       }
       
@@ -49,7 +58,7 @@ void setup() {
     e.printStackTrace();
   }
   
-  frameRate(60);
+  frameRate(24);
   
   frame.addComponentListener(new ComponentAdapter() {
     public void componentResized(ComponentEvent e) {
@@ -63,28 +72,35 @@ void setup() {
 }
 
 void draw() {
-  background(102);
+  background(0);
 
   fe_worldmap.step();
   fe_worldmap.render();
+//  pg.render();
 
-  if(w_event) {
-     for (int i=0; i < points.length/2; i++) {
-      fe_worldmap.renderGeoPoint(points[(i*2)+1],points[i*2]);
-    }
-//    fe_worldmap.renderGeoPoint(4.895976, 52.369370); // adam
-//    fe_worldmap.renderGeoPoint(-73.986951, 40.756054);  // ny
-  }
+  photo.step().render();
+  
+//  if(w_event) {
+//     for (int i=0; i < points.length/2; i++) {
+//      fe_worldmap.renderGeoPoint(points[(i*2)+1],points[i*2]);
+//    }
+//  }
 
   fe_timeline.step();
   fe_timeline.render();
 }
 
-void keyPressed(){
+void mouseClicked() {
+  System.out.println("click");
+  fe_worldmap.processMouseClick(mouseX, mouseY);
+}
+
+void keyPressed() {
   if(key=='w'||key=='W'){
     w_event = !w_event;
   }
 } 
+
 void keyReleased() {
 //  if(key=='w'||key=='W'){
 //    w_event=false;
