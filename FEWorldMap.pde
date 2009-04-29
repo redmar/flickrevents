@@ -14,13 +14,10 @@ class FEWorldMap {
     ypos = (height/2)-(img_height/2);
     photoGroups = new Vector();
   }
-  
-  public synchronized void addPhotoSync(Photo p){
-    addPhoto(p);
-  }
 
   // walk each photogroup if we're inside a given radius add it to that group
-  void addPhoto(Photo p) {
+  public synchronized void addPhoto(Photo p) {
+   
     boolean added = false;
     for (int i=0; i < photoGroups.size(); i++) {
       GeoData geo = p.getGeoData();

@@ -1,0 +1,1 @@
+<photo id="3470083253" owner="35980030@N05" secret="7dc4e25149" server="3558" farm="4" latitude="51.463577" longitude="-0.132565" tags="music,london,rock,drums,pop,cymbals,"/>

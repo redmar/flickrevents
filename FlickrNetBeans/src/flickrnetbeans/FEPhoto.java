@@ -2,6 +2,7 @@ package flickrnetbeans;
 
 import processing.core.*;
 import gifAnimation.*;
+import com.aetrion.flickr.photos.*;
 
 class FEPhoto {
   PImage original_img;

@@ -1,0 +1,10 @@
+<photo id="3423752123" owner="22809317@N04" secret="d10c0fcaab" server="3378" farm="4" latitude="37.7875" longitude="-122.40967" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3423751635" owner="22809317@N04" secret="5b7b393c41" server="3342" farm="4" latitude="37.7875" longitude="-122.40967" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3424558748" owner="22809317@N04" secret="c061ed7f88" server="3664" farm="4" latitude="37.787334" longitude="-122.409836" tags="show,music,concert,armin,rubyskye,trance,arminvanbuuren,"/>
+<photo id="3423751933" owner="22809317@N04" secret="83e8fe2c55" server="3328" farm="4" latitude="37.787167" longitude="-122.409164" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3423753163" owner="22809317@N04" secret="dda381402f" server="3347" farm="4" latitude="37.7875" longitude="-122.40967" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3423752571" owner="22809317@N04" secret="a04fbe3c05" server="3653" farm="4" latitude="37.7875" longitude="-122.40967" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3424560144" owner="22809317@N04" secret="db15d6834d" server="3185" farm="4" latitude="37.787334" longitude="-122.40933" tags="show,music,concert,armin,rubyskye,trance,arminvanbuuren,"/>
+<photo id="3424559926" owner="22809317@N04" secret="fdb04c8c97" server="3197" farm="4" latitude="37.7875" longitude="-122.40967" tags="show,music,concert,armin,rubyskye,trance,arminvanbuuren,"/>
+<photo id="3423752419" owner="22809317@N04" secret="702fd15329" server="3655" farm="4" latitude="37.7875" longitude="-122.40967" tags="rubyskye,music,armin,arminvanbuuren,show,concert,trance,"/>
+<photo id="3424559484" owner="22809317@N04" secret="f33819e17f" server="3377" farm="4" latitude="37.7875" longitude="-122.40967" tags="show,music,concert,armin,rubyskye,trance,arminvanbuuren,"/>

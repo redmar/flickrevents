@@ -1,2 +1,0 @@
-module GatherHelper
-end

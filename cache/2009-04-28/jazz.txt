@@ -1,0 +1,1 @@
+<photo id="3483241722" owner="42843357@N00" secret="c9e04a2453" server="3612" farm="4" latitude="48.852688" longitude="2.352662" tags="people,music,paris,20d,canon,bass,jazz,sigma,17,sax,70,oziobao,parigi2009,"/>
