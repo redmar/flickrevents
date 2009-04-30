@@ -34,7 +34,26 @@ void setup() {
   fe_worldmap = new FEWorldMap();  
   fe_timeline = new FETimeLine();
   try {
-    fe_data = new FlickrData();  
+    //*
+    fe_data = new FlickrData("dance", 1, fe_worldmap);
+    PhotoList photoList = fe_data.getPhotos(1);
+    
+    for(int i = 1; i <= photoList.getPages(); i++) {
+      Thread thread = new Thread(new FlickrData("dance", i, fe_worldmap), "thread " + i);
+      thread.start();
+    }
+    
+    fe_data = new FlickrData("classic", 1, fe_worldmap);
+    photoList = fe_data.getPhotos(1);
+    
+    for(int i = 1; i <= photoList.getPages(); i++) {
+      Thread thread = new Thread(new FlickrData("classic", i, fe_worldmap), "thread " + i);
+      thread.start();
+    }
+    //*/
+    
+    /*
+    fe_data = new FlickrData("dance",1);  
     PhotoList photoList = fe_data.getPhotos(1);
     System.out.println(photoList.getTotal());
     points = new float[1000*2];
@@ -51,9 +70,9 @@ void setup() {
 //          points[(i*2)+1] = geo.getLongitude(); 
         }
       }
-      
-      //System.out.println(count);
     }
+    //*/
+      //System.out.println(count);
   } catch (Exception e) {
     e.printStackTrace();
   }
@@ -76,7 +95,8 @@ void draw() {
 
   fe_worldmap.step();
   fe_worldmap.render();
-//  pg.render();
+
+  pg.render();
 
   photo.step().render();
   
@@ -95,7 +115,7 @@ void mouseClicked() {
   fe_worldmap.processMouseClick(mouseX, mouseY);
 }
 
-void keyPressed() {
+void keyPressed(){
   if(key=='w'||key=='W'){
     w_event = !w_event;
   }

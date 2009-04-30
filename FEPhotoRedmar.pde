@@ -1,6 +1,6 @@
 import gifAnimation.*;
 
-class FEPhoto {
+class FEPhotoRedmar {
   PImage original_img;
   Gif progress_img;  
   
@@ -12,7 +12,7 @@ class FEPhoto {
   String farm_id, server_id, id, secret;
   String flickr_url = "";
   
-  FEPhoto(PApplet parent, Photo p) {
+  FEPhotoRedmar(PApplet parent, Photo p) {
     // extract photo info
     progress_img = new Gif(parent, "loader.gif"); //loadImage("loader.gif");  // Load the image into the program  
     progress_img.play();    
@@ -20,7 +20,7 @@ class FEPhoto {
 //    setFlickrURL("http://farm2.static.flickr.com/1023/529567127_cf62646bd3.jpg?v=0");
   }
   
-  FEPhoto(PApplet parent) {
+  FEPhotoRedmar(PApplet parent) {
     progress_img = new Gif(parent, "loader.gif"); //loadImage("loader.gif");  // Load the image into the program  
     progress_img.play();    
   }
@@ -51,7 +51,7 @@ class FEPhoto {
     return "http://farm" + farm_id + ".static.flickr.com/" + server_id + "/" + id + "_" + secret + ".jpg";
   }
 
-  FEPhoto step() {
+  FEPhotoRedmar step() {
     if( loading && original_img != null) {
       switch(original_img.width) {
         case 0: 

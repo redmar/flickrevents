@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  owner_id: 1
+  photo_id: 1
+  secret: MyString
+  server: 1
+  farm: 1
+  latitude: 1.5
+  longitude: 1.5
+  tags: MyText
+
+two:
+  owner_id: 1
+  photo_id: 1
+  secret: MyString
+  server: 1
+  farm: 1
+  latitude: 1.5
+  longitude: 1.5
+  tags: MyText

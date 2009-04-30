@@ -1,6 +1,6 @@
 import java.util.*;
 
-class FEPhotoGroup {
+class FEPhotoGroupRedmar {
   float x, y, radius;
   Vector photos;
   boolean showPhotos = false;
@@ -9,11 +9,11 @@ class FEPhotoGroup {
   float calculated_radius_end;
   float calculated_radius_begin = 0;
   
-  FEPhotoGroup() {
+  FEPhotoGroupRedmar() {
     this(0, 0, 1);
   }
   
-  FEPhotoGroup(float x, float y, int radius) {
+  FEPhotoGroupRedmar(float x, float y, int radius) {
     this.radius = max(radius,1);
     this.x = x;
     this.y = y;

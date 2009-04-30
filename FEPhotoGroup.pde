@@ -44,21 +44,21 @@ class FEPhotoGroup {
     return dist(x, y, latitude, longitude) < 0.005 ;  
   }
   
-//  void render() {
-//    ellipseMode(CENTER);
-//    float calculated_radius = (radius*2)*(max(photos.size(),1));
-//    stroke(1.0, 0, 0);
-//    fill(1.0, 0, 0, 0.5);
-//    ellipse(x, y, calculated_radius, calculated_radius);
-//  }
+  void render() {
+    ellipseMode(CENTER);
+    float calculated_radius = (radius*2)*(max(photos.size(),1));
+    stroke(1.0, 0, 0);
+    fill(1.0, 0, 0, 0.5);
+    ellipse(x, y, calculated_radius, calculated_radius);
+//    ellipse(x, y, radius, radius);
+  }
   
   void render(FEWorldMap worldmap) {
     float pointXlong = worldmap.longToX(x);
     float pointYlat  = worldmap.latToY(y); 
 
     ellipseMode(CENTER);
-//    float calculated_radius = (radius*2)*(max(photos.size(),1));
-
+    float calculated_radius = (radius*2)*(max(photos.size(),1));
    if( !showPhotos ) {
     stroke(1.0, 0, 0);
     fill(1.0, 0, 0, 0.5);
@@ -66,7 +66,6 @@ class FEPhotoGroup {
    else {
     stroke(1.0, 1.0, 1.0);
     fill(1.0, 1.0, 1.0, 0.2);
-    
    }
     ellipse(pointXlong, pointYlat, calculated_radius, calculated_radius);
 

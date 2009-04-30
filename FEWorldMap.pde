@@ -14,6 +14,10 @@ class FEWorldMap {
     ypos = (height/2)-(img_height/2);
     photoGroups = new Vector();
   }
+  
+  public synchronized void addPhotoSync(Photo p){
+    addPhoto(p);
+  }
 
   // walk each photogroup if we're inside a given radius add it to that group
   void addPhoto(Photo p) {
@@ -71,6 +75,35 @@ class FEWorldMap {
       ((FEPhotoGroup)photoGroups.get(i)).step(this);
     }
   }
+
+//  void step() {
+////    float difw = (width*0.9) - img_width;
+////    if(abs(difw) > 1.0) {
+////      img_width = img_width + difw/drag;
+////    }  
+////
+////    float difh = (height*0.8) - img_height;
+////    if(abs(difh) > 1.0) {
+////      img_height = img_height + difh/drag;
+////    }  
+////
+////    float difx = (width/2)-(img_width/2) - xpos;
+////    if(abs(difx) > 1.0) {
+////      xpos = xpos + difx/drag;
+////      xpos = constrain(xpos, 0, (width/2)+(img_width/2));
+////    }  
+////  
+////    float dify = (height/2)-(img_height/2) - ypos;
+////    if(abs(dify) > 1.0) {
+////      ypos = ypos + dify/drag;
+////      ypos = constrain(ypos, 0, (height/2)+(img_height));
+////    }  
+//
+//    img_width = width*0.7;
+//    img_height = height*0.8;
+//    xpos = (width*0.05);
+//    ypos = (height*0.1);
+//  }
 
   void render() {
     // Displays the image at point (100, 0) at half of its size
