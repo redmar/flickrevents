@@ -1,10 +1,11 @@
-//Global global;
+boolean search_on_startup = false;
 boolean w_event = true;
 FETimeLine fe_timeline;  
 FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
-String cacheDir = "/Users/benoist/flickrevents/cache/";
+FEDateView dateView;
+String cacheDir = "~/flickrevents/cache/";
 
 void setup() {
   smooth();
@@ -18,17 +19,21 @@ void setup() {
 
   fe_worldmap = new FEWorldMap();  
   fe_timeline = new FETimeLine();
-  try {
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-    Date date = df.parse("2009-04-28");
-    for(int i = 0; i < 31; i++){
-      String prevDay = df.format((date.getTime() - i * 1000*3600*24));
-      if (!new File(cacheDir+prevDay).exists()){
-        FEFlickrData fe_data = new FEFlickrData(prevDay);
+  dateView = new FEDateView(this);
+  
+  if(search_on_startup) {
+    try {
+      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      Date date = df.parse("2009-04-28");
+      for(int i = 0; i < 31; i++){
+        String prevDay = df.format((date.getTime() - i * 1000*3600*24));
+        if (!new File(cacheDir+prevDay).exists()){
+          FEFlickrData fe_data = new FEFlickrData(prevDay);
+        }
       }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-  } catch (Exception e) {
-    e.printStackTrace();
   }
   
   frameRate(24);
@@ -56,6 +61,9 @@ void draw() {
 
   fe_timeline.step();
   fe_timeline.render();
+  
+  dateView.step();
+  dateView.render();
 }
 
 void mouseClicked() {
