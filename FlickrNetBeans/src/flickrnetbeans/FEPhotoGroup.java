@@ -1,6 +1,8 @@
 package flickrnetbeans;
 
 import java.util.*;
+import processing.core.*;
+import java.math.*;
 
 class FEPhotoGroup {
   float x, y, radius;

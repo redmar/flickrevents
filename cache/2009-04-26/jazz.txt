@@ -1,0 +1,1 @@
+<photo id="3476058439" owner="50394729@N00" secret="a8e1a3bc29" server="3640" farm="4" latitude="48.855465" longitude="2.364528" tags="music,paris,blackwhite,jazz,splash,"/>
