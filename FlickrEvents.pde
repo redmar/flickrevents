@@ -1,3 +1,4 @@
+
 boolean search_on_startup = false;
 boolean w_event = true;
 FETimeLine fe_timeline;  
@@ -74,6 +75,16 @@ void mouseClicked() {
 void keyPressed(){
   if(key=='w'||key=='W'){
     w_event = !w_event;
+  }
+  if(key == CODED) {
+    if(keyCode==LEFT) {
+      dateView.gotoPrevDay(); 
+      System.out.println("goto prev day");
+    }
+    if(keyCode==RIGHT) {
+      dateView.gotoNextDay(); 
+      System.out.println("goto next day");
+    }
   }
 } 
 
