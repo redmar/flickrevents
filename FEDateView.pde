@@ -1,11 +1,18 @@
 import java.util.*;
 
-class FEDateView {
+class FEDateView extends Observable {
   PImage original_img;
   PApplet parent;
   PFont font;
   
   GregorianCalendar calendar;
+
+  // used for date skipping
+  float start_time = -1; 
+  float last_time = -1;
+  float current_time = -1;
+  int calendar_type = Calendar.DATE;
+  float amount = 1.0;
 
   float xpos = 200.0;
   float ypos = 200.0;
@@ -13,78 +20,80 @@ class FEDateView {
   float img_height = 200.0;
   float midx = 0;
   float midy = 0;
-  
-//  float drag = 30.0;
-//  boolean loading = true;
-//
-//  String farm_id, server_id, id, secret;
-//  String flickr_url = "";
-
-  FEDateView() {
-    // 
-    //
-    //
-  }
-  
+    
   FEDateView(PApplet parent) {
     this.parent = parent;
     initDateView();
   }
   
   void initDateView() {
-	calendar = new GregorianCalendar(2009, 4, 28);
-	System.out.println("Setting up calender to: " + currentDateString());
-	// calendar = new GregorianCalendar(year(), month(), day());  // do this for current date
-	
+    calendar = new GregorianCalendar(2009, 4, 28);
+    System.out.println("Setting up calender to: " + currentFullDateString());
+    System.out.println("Setting up calender to date: " + currentDate());
     PFont font = createFont("FuturaLT", 48);
     textFont(font, 48); 
-//    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//    Date date = df.parse("2009-04-28");
   }
 
   Date currentDate() {
-    return null;
+    return calendar.getTime();
   }
 
-  String currentDateString() {
+  // return day number as string with padded zero in front of it (always giving back 2 decimals)
+  String currentDayString() {
+    return ((calendar.get(Calendar.DATE) < 10) ? "0"+calendar.get(Calendar.DATE) : ""+calendar.get(Calendar.DATE));
+  }
+  
+  String currentMonthString() {
     String[] months = {"January", "Februari", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-    String day_padded = ((calendar.get(Calendar.DATE) < 10) ? "0"+calendar.get(Calendar.DATE) : ""+calendar.get(Calendar.DATE));
-    return day_padded + " " + months[calendar.get(Calendar.MONTH)] + " " + calendar.get(Calendar.YEAR);
+    return months[calendar.get(Calendar.MONTH)];
+  }
+  
+  String currentYearString() {
+    return ""+calendar.get(Calendar.YEAR);
+  }
+  
+  String currentFullDateString() {
+    return currentDayString() + " " + currentMonthString() + " " + currentYearString();
   }
 
-  void gotoPrevDay() {
-	calendar.add(Calendar.DATE, -1);
-  }
-
-  void gotoNextDay() {
-	calendar.add(Calendar.DATE, 1);
+  void gotoPrevDay() { gotoDay(-1); }
+  void gotoNextDay() { gotoDay(1);  }
+  void gotoDay(int count) {
+    current_time = millis();
+    
+    if (current_time - last_time < 500) {
+      if(current_time - start_time > 6000) { 
+        calendar_type = Calendar.YEAR;
+        amount = amount + 0.05;
+      }
+      else if(current_time - start_time > 2000) {
+        calendar_type = Calendar.MONTH;
+        amount = amount + 0.05;
+      }
+      else {  // normal date 
+       amount = 1.0; 
+      }
+    }
+    else {
+      start_time = current_time;
+      calendar_type = Calendar.DATE;
+      amount = 1.0;
+    }
+    if ( Math.round(amount) > 0.999) { 
+       calendar.add(calendar_type, count);  
+       amount = 0;
+    }
+    setChanged();
+    last_time = current_time;
   }
 
   void render(){
     ellipseMode(CENTER);
     stroke(0.0, 1.0, 0);
     fill(0, 1.0, 0, 0.5);
-//    ellipse(xpos, ypos, 5, 5);  
-    rect(xpos, ypos, this.img_width, this.img_height);  
-//    line(midx - (img_width/2), midy, midx + (img_width/2), midy);
-    
-//    fill(1.0, 1.0, 1.0, 1.0);
-//    beginShape();
-//      vertex(30, 20);
-//      vertex(85, 20);
-//      vertex(85, 75);
-//      vertex(30, 75);
-//    endShape(CLOSE);
-//
-//    beginShape();
-//      curveVertex(midx,  ypos);
-//      curveVertex(xpos,  midy);
-//      curveVertex(midx,  ypos + img_height);
-//      curveVertex(midx,  ypos);
-//    endShape(CLOSE);
-    
+    rect(xpos, ypos, this.img_width, this.img_height);      
     fill(1.0, 1.0, 1.0, 1.0);
-    text(currentDateString(), xpos, midy);
+    text(currentFullDateString(), xpos, midy);
   }
   
   void step() {
@@ -95,5 +104,4 @@ class FEDateView {
     midx = xpos + (img_width / 2);
     midy = ypos + (img_height / 2);
   }
-
 }
