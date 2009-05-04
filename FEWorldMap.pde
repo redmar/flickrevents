@@ -7,7 +7,7 @@ class FEWorldMap {
   Vector photoGroups;
   
   FEWorldMap() {
-    img = loadImage("map.png");  // Load the image into the program  
+    img = loadImage("mapbw.png");  // Load the image into the program  
     img_width = width/2;
     img_height = height/2;
     xpos = (width/2)-(img_width/2);
