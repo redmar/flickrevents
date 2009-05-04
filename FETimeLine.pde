@@ -1,91 +1,132 @@
 class FETimeLine {
-  int[] a = new int[367];
-  int[] b = new int[367];
-  int maxPerDay = 0;
-  float fe_timeline_height = 100;
-  float fe_timeline_day_small_width;
-  float fe_timeline_day_selected_width = 35;
-  int selected_day = 11;
+  FEDayCollection dayCollection;
+  float resizeFactor;
+  float locationX, locationY;
   
-  FETimeLine(){
-    generateArrays();
-    fe_timeline_day_small_width = (float)1024 / 365.0;
-  }
-  
-  void generateArrays(){
-    Random generator = new Random(1);
-    
-    for(int i = 0; i < 367; i++){
-      a[i] = generator.nextInt(50);
-      b[i] = generator.nextInt(50);
-      
-      maxPerDay = Math.max(maxPerDay, Math.max(a[i], b[i]));
-    }
+  FETimeLine(FEDayCollection dayCollection){
+    this.dayCollection = dayCollection;
+    resizeFactor = 150.0 / (float) dayCollection.getMaxPhotos();
+    locationX = 20.0;
+    locationY = 700.0;
   }
   
   void step(){
-    
-    if (mouseX > 1024){
-      selected_day = 365;
-    } else {
-      selected_day = (int)((float) mouseX / fe_timeline_day_small_width);
+
+  }
+  
+  void renderTag(float startX, float startY, FEDay prev, FEDay next, FETag tag)
+  {
+    float x = startX, y = startY;
+    beginShape();
+      vertex(x, y);
+      y = startY - (prev.getTag(tag.getTagName()).size() * resizeFactor);
+      vertex(x, y);
+      x += 10.0;
+      y = startY - (tag.size() * resizeFactor);
+      vertex(x,y);
+      x += 10.0;
+      y = startY -  (next.getTag(tag.getTagName()).size() * resizeFactor);
+      vertex(x, y);
+      y = startY;
+      vertex(x, y);
+      x -= 10.0;
+      y = startY;
+    endShape(CLOSE);
+  }
+  
+  void setColor(int number)
+  {
+    switch (number)
+    {
+      case 0:
+        fill(0.5,0.5,0);
+        break;
+      case 1:
+        fill(0.0,1,0);
+        break;
+      case 2:
+        fill(0.0,1,1);
+        break;
+      case 3:
+        fill(0.0,0.0,1);
+        break;
+      case 4:
+        fill(0.5,0.0,0);
+        break;
     }
   }
   
   void render(){
-    float x = 0;
-    float y = 0;
+    
     noStroke();
-    for(int i = 1; i < 366; i++){
-      //Draw a
+    float startX = locationX, startY = locationY;
+    for(int i = 0; i < dayCollection.size(); i++){
+      FEDay day = (FEDay) dayCollection.get(i);
+      FEDay prevDay, nextDay;
       
-      if (i == selected_day){
-        fill(1.0,1.0,0);
-        beginShape();
-          vertex(x, y);
-          y = a[i-1];
-          vertex(x, y);
-          x += fe_timeline_day_selected_width / 2.0;
-          y = a[i];
-          vertex(x,y);
-          x += fe_timeline_day_selected_width / 2.0;
-          y = a[i+1];
-          vertex(x, y);
-          y = 0;
-          vertex(x, y);
-        endShape(CLOSE);
-        
-        x -= fe_timeline_day_selected_width;
-        
-        fill(1.0,0.0,0);
-        beginShape();
-          y = a[i-1];
-          vertex(x, y);
-          y = a[i-1] + b[i-1];
-          vertex(x, y);
-          x += fe_timeline_day_selected_width / 2.0;
-          y = a[i] + b[i];
-          vertex(x,y);
-          x += fe_timeline_day_selected_width / 2.0;
-          y = a[i+1] + b[i+1];
-          vertex(x, y);
-          y = a[i+1];
-          vertex(x, y);
-          x -= fe_timeline_day_selected_width / 2.0;
-          y = a[i];
-          vertex(x,y);
-          x += fe_timeline_day_selected_width / 2.0;
-        endShape(CLOSE);
-      } else {
-        fill(1.0,1.0,0);
-        rect(x,0,fe_timeline_day_small_width,a[i]);
-        fill(1.0,0,0);
-        rect(x,a[i],fe_timeline_day_small_width, a[i] + b[i]);
-        x += fe_timeline_day_small_width;
+      if (i == 0){
+        prevDay = (FEDay) dayCollection.get(i);
+      } else{
+        prevDay = (FEDay) dayCollection.get(i - 1);
       }
-      /*
-
-      */
+      
+      if (i == (dayCollection.size() - 1)){
+        nextDay = (FEDay) dayCollection.get(i);
+      } else {
+        nextDay = (FEDay) dayCollection.get(i + 1);
+      }
+      
+      for(int j = 0; j < day.size(); j++){
+        FETag tag = (FETag) day.get(j);
+        setColor(j);
+        System.out.println(day.getDate() + " " + tag.getTagName() + " " + tag.size());
+        renderTag(startX, startY, prevDay, nextDay, tag);
+      }
+      startX += 20.0;
+//      if (i == selected_day){
+//        fill(1.0,1.0,0);
+//        beginShape();
+//          vertex(x, y);
+//          y = a[i-1];
+//          vertex(x, y);
+//          x += fe_timeline_day_selected_width / 2.0;
+//          y = a[i];
+//          vertex(x,y);
+//          x += fe_timeline_day_selected_width / 2.0;
+//          y = a[i+1];
+//          vertex(x, y);
+//          y = 0;
+//          vertex(x, y);
+//        endShape(CLOSE);
+//        
+//        x -= fe_timeline_day_selected_width;
+//        
+//        fill(1.0,0.0,0);
+//        beginShape();
+//          y = a[i-1];
+//          vertex(x, y);
+//          y = a[i-1] + b[i-1];
+//          vertex(x, y);
+//          x += fe_timeline_day_selected_width / 2.0;
+//          y = a[i] + b[i];
+//          vertex(x,y);
+//          x += fe_timeline_day_selected_width / 2.0;
+//          y = a[i+1] + b[i+1];
+//          vertex(x, y);
+//          y = a[i+1];
+//          vertex(x, y);
+//          x -= fe_timeline_day_selected_width / 2.0;
+//          y = a[i];
+//          vertex(x,y);
+//          x += fe_timeline_day_selected_width / 2.0;
+//        endShape(CLOSE);
+//      } else {
+//        fill(1.0,1.0,0);
+//        rect(x,0,fe_timeline_day_small_width,a[i]);
+//        fill(1.0,0,0);
+//        rect(x,a[i],fe_timeline_day_small_width, a[i] + b[i]);
+//        x += fe_timeline_day_small_width;
+//      }
     }
   }
 }

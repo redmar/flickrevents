@@ -1,0 +1,1 @@
+<photo id="3468648098" owner="85008049@N00" owner_name="mybigbro" secret="99a5fdc12f" server="3524" farm="4" latitude="3.159145" longitude="101.71069" tags="music,classic,violin,instrument,kualalumpur,biola,mpo,dfp,mybigbro,malaysianphilharmonicorchestra,dewanfilharmonikpetronas,"/>

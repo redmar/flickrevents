@@ -29,7 +29,7 @@ class FEDataSaver
     for(int i = 0; i < p.getTags().size(); i++){
       tags += ((Tag)tagArray[i]).getValue() + ",";
     }    
-    photoString = "<photo id=\""+p.getId()+"\" owner=\""+p.getOwner().getId()+"\" secret=\""+p.getSecret()+"\" server=\""+p.getServer()+"\" farm=\""+p.getFarm()+"\" latitude=\""+p.getGeoData().getLatitude()+"\" longitude=\""+p.getGeoData().getLongitude()+"\" tags=\""+tags+"\"/>\n";
+    photoString = "<photo id=\""+p.getId()+"\" owner=\""+p.getOwner().getId()+"\" owner_name=\""+p.getOwner().getUsername()+"\" secret=\""+p.getSecret()+"\" server=\""+p.getServer()+"\" farm=\""+p.getFarm()+"\" latitude=\""+p.getGeoData().getLatitude()+"\" longitude=\""+p.getGeoData().getLongitude()+"\" tags=\""+tags+"\"/>\n";
     
     writeString(photoString);
   }

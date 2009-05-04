@@ -6,7 +6,7 @@ FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
-String cacheDir = "~/flickrevents/cache/";
+String cacheDir = "/users/benoist/flickrevents/cache/";
 
 void setup() {
   smooth();
@@ -18,16 +18,15 @@ void setup() {
   pg = new FEPhotoGroup(200,200,30);
   photo = new FEPhoto(this);
 
-  fe_worldmap = new FEWorldMap();  
-  fe_timeline = new FETimeLine();
+  fe_worldmap = new FEWorldMap();
   dateView = new FEDateView(this);
-  
+  SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   if(search_on_startup) {
     try {
-      SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-      Date date = df.parse("2009-04-28");
+      GregorianCalendar calendar = new GregorianCalendar(2009, 3, 28);
       for(int i = 0; i < 31; i++){
-        String prevDay = df.format((date.getTime() - i * 1000*3600*24));
+        calendar.add(Calendar.DATE, -1);
+        String prevDay = df.format(calendar.getTime());
         if (!new File(cacheDir+prevDay).exists()){
           FEFlickrData fe_data = new FEFlickrData(prevDay);
         }
@@ -35,6 +34,21 @@ void setup() {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  } else {
+    FECacheReader cacheReader = new FECacheReader();
+    FEDayCollection dayCollection = cacheReader.getDayCollection();
+    fe_timeline = new FETimeLine(dayCollection);
+//    try {
+//      for (int i = 0; i < dayCollection.size(); i++){
+//        FEDay day = (FEDay) dayCollection.get(i);
+//        for (int j = 0; j < day.size(); j++){
+//          FETag tag = (FETag) day.get(j);
+//          System.out.println(day.getDate() + " " + tag.getTagName() + " " + tag.size());
+//        }
+//      }
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
   }
   
   frameRate(24);
