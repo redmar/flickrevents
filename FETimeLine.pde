@@ -1,7 +1,8 @@
-class FETimeLine {
+class FETimeLine implements Observer {
   FEDayCollection dayCollection;
   float resizeFactor;
   float locationX, locationY;
+  boolean debug = false;
   
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
@@ -9,7 +10,7 @@ class FETimeLine {
     locationX = 20.0;
     locationY = 700.0;
   }
-  
+      
   void step(){
 
   }
@@ -79,7 +80,7 @@ class FETimeLine {
       for(int j = 0; j < day.size(); j++){
         FETag tag = (FETag) day.get(j);
         setColor(j);
-        System.out.println(day.getDate() + " " + tag.getTagName() + " " + tag.size());
+//        log(day.getDate() + " " + tag.getTagName() + " " + tag.size());
         renderTag(startX, startY, prevDay, nextDay, tag);
       }
       startX += 20.0;
@@ -128,5 +129,18 @@ class FETimeLine {
 //        x += fe_timeline_day_small_width;
 //      }
     }
+  }
+  
+  void log(String what) {
+    if( FlickrEvents.DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
+  }
+  
+ /* This function will be called by the FEDateView class when it's date has changed.
+  * Meaning the whole GUI has to change/recalculate to the new date. */
+  void update(Observable o, Object arg) { 
+    Date newDate = ((FEDateView)o).currentDate();
+    log("needs to change to the new date of: " + newDate); 
+
+    // TODO: change inner date here
   }
 }

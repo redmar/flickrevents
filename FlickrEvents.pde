@@ -1,25 +1,33 @@
 
-boolean search_on_startup = false;
-boolean w_event = true;
+// Global Preferences ////////////////
+static final boolean DEBUG = true;
+boolean search_on_startup  = false;
+//////////////////////////////////////
+
 FETimeLine fe_timeline;  
 FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
-String cacheDir = "/users/benoist/flickrevents/cache/";
+String cacheDir = "/users/rjk/Documents/Processing/FlickrEvents/cache/";
+boolean w_event = true;
+boolean debug = false;
 
 void setup() {
   smooth();
   colorMode(RGB, 1.0);
 
   frame.setResizable(true); 
-  size(screen.width, screen.height-50);
+//  size(screen.width, screen.height-50);
+  size(1024, 768);
 
-  pg = new FEPhotoGroup(200,200,30);
-  photo = new FEPhoto(this);
+//  pg = new FEPhotoGroup(200,200,30);
+//  photo = new FEPhoto(this);
 
   fe_worldmap = new FEWorldMap();
   dateView = new FEDateView(this);
+  dateView.addObserver(fe_worldmap);
+
   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   if(search_on_startup) {
     try {
@@ -38,6 +46,7 @@ void setup() {
     FECacheReader cacheReader = new FECacheReader();
     FEDayCollection dayCollection = cacheReader.getDayCollection();
     fe_timeline = new FETimeLine(dayCollection);
+    dateView.addObserver(fe_timeline);
 //    try {
 //      for (int i = 0; i < dayCollection.size(); i++){
 //        FEDay day = (FEDay) dayCollection.get(i);
@@ -70,9 +79,9 @@ void draw() {
   fe_worldmap.step();
   fe_worldmap.render();
 
-  pg.render();
+//  pg.render();
 
-  photo.step().render();
+//  photo.step().render();
 
   fe_timeline.step();
   fe_timeline.render();
@@ -93,14 +102,18 @@ void keyPressed(){
   if(key == CODED) {
     if(keyCode==LEFT) {
       dateView.gotoPrevDay(); 
-      System.out.println("goto prev day");
+//      System.out.println("goto prev day");
     }
     if(keyCode==RIGHT) {
       dateView.gotoNextDay(); 
-      System.out.println("goto next day");
+//      System.out.println("goto next day");
     }
   }
 } 
 
 void keyReleased() {
+}
+
+void log(String what) {
+  if( FlickrEvents.DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
 }

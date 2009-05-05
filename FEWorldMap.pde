@@ -1,10 +1,11 @@
-class FEWorldMap {
+class FEWorldMap implements Observer {
   PImage img;
   float xpos;
   float ypos;
   float drag = 30.0;
   float img_width, img_height;
   Vector photoGroups;
+  boolean debug = false;
   
   FEWorldMap() {
     img = loadImage("mapbw.png");  // Load the image into the program  
@@ -140,5 +141,16 @@ class FEWorldMap {
   float latToY(float latitude)
   {
     return ypos + ((img_height / 180.0) * (-1 * (latitude - 90)));
+  }
+  
+ /* This function will be called by the FEDateView class when it's date has changed.
+  * Meaning the whole GUI has to change/recalculate to the new date. */
+  void update(Observable o, Object arg) { 
+    Date newDate = ((FEDateView)o).currentDate();
+    log("needs to change to the new date of: " + newDate); 
+  }
+  
+  void log(String what) {
+    if( FlickrEvents.DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
   }
 }
