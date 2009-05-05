@@ -11,7 +11,7 @@ class FECacheReader
     String[] dirs = folder.list();
     for(int i = 0; i < dirs.length; i++)
     {
-      if (dirs[i] != "." && dirs[i] != ".." && !dirs[i].contains("rock"))
+      if (dirs[i] != "." && dirs[i] != "..")
       {
         try{
           Date date = dateFormat.parse(dirs[i]);
@@ -31,7 +31,7 @@ class FECacheReader
     String[] dirs = dayFolder.list();
     for(int i = 0; i < dirs.length; i++)
     {
-      if (dirs[i] != "." && dirs[i] != ".." && !dirs[i].contains("rock"))
+      if (dirs[i] != "." && dirs[i] != "..")
       {
         day.add(loadTag(folder, dirs[i]));
       }

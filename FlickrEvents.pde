@@ -38,6 +38,7 @@ void setup() {
     FECacheReader cacheReader = new FECacheReader();
     FEDayCollection dayCollection = cacheReader.getDayCollection();
     fe_timeline = new FETimeLine(dayCollection);
+    dateView.addObserver(fe_timeline);
 //    try {
 //      for (int i = 0; i < dayCollection.size(); i++){
 //        FEDay day = (FEDay) dayCollection.get(i);

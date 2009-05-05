@@ -27,7 +27,7 @@ class FEDateView extends Observable {
   }
   
   void initDateView() {
-    calendar = new GregorianCalendar(2009, 4, 28);
+    calendar = new GregorianCalendar(2009, 3, 27);
     System.out.println("Setting up calender to: " + currentFullDateString());
     System.out.println("Setting up calender to date: " + currentDate());
     PFont font = createFont("FuturaLT", 48);
@@ -84,6 +84,7 @@ class FEDateView extends Observable {
        amount = 0;
     }
     setChanged();
+    notifyObservers(currentDate());
     last_time = current_time;
   }
 

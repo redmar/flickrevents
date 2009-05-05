@@ -1,17 +1,36 @@
-class FETimeLine {
+import java.lang.*;
+
+class FETimeLine implements Observer {
   FEDayCollection dayCollection;
   float resizeFactor;
   float locationX, locationY;
+  Date selectedDate;
+  float selectedDateWidth;
+  boolean update = false;
+  boolean bounce = false;
   
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
-    resizeFactor = 150.0 / (float) dayCollection.getMaxPhotos();
+    resizeFactor = (200/5) / (float) log(dayCollection.getMaxPhotos());
     locationX = 20.0;
-    locationY = 700.0;
+    locationY = 800.0;
+  }
+  
+  void update(Observable obj, Object arg)
+  {
+    selectedDate = (Date) arg;
+    update = true;
   }
   
   void step(){
-
+    if (update){
+      selectedDateWidth = 30;
+      update = false;
+    } else if (selectedDateWidth < 200 && selectedDateWidth != 150) {
+      selectedDateWidth += 100;
+    } else {
+      selectedDateWidth = 150;
+    }
   }
   
   void renderTag(float startX, float startY, FEDay prev, FEDay next, FETag tag)
@@ -34,31 +53,27 @@ class FETimeLine {
     endShape(CLOSE);
   }
   
-  void setColor(int number)
+  void setColor(String number)
   {
-    switch (number)
-    {
-      case 0:
-        fill(0.5,0.5,0);
-        break;
-      case 1:
-        fill(0.0,1,0);
-        break;
-      case 2:
-        fill(0.0,1,1);
-        break;
-      case 3:
-        fill(0.0,0.0,1);
-        break;
-      case 4:
-        fill(0.5,0.0,0);
-        break;
+    if (number.equals("rock")){
+      fill(#FF0000,0.5);
+      stroke(#FF0000);
+    } else if (number.equals("classic")){
+      fill(#00FF00,0.5);
+      stroke(#00FF00);
+    } else if (number.equals("trance")){
+      fill(#0000FF,0.5);
+      stroke(#0000FF);
+    } else if (number.equals("pop")){
+       fill(#FFFF00,0.5);
+      stroke(#FFFF00);
+    } else if (number.equals("jazz")){
+      fill(#FF00FF,0.5);
+      stroke(#FF00FF);
     }
   }
   
   void render(){
-    
-    noStroke();
     float startX = locationX, startY = locationY;
     for(int i = 0; i < dayCollection.size(); i++){
       FEDay day = (FEDay) dayCollection.get(i);
@@ -76,57 +91,28 @@ class FETimeLine {
         nextDay = (FEDay) dayCollection.get(i + 1);
       }
       
-      for(int j = 0; j < day.size(); j++){
-        FETag tag = (FETag) day.get(j);
-        setColor(j);
-        System.out.println(day.getDate() + " " + tag.getTagName() + " " + tag.size());
-        renderTag(startX, startY, prevDay, nextDay, tag);
+      float w;
+      if (day.getDate().equals(selectedDate)){
+        w = selectedDateWidth;
+        for(int j = 0; j < day.size(); j++){
+          FETag tag = (FETag) day.get(j);
+          float h = (float) max(log(tag.size()) * resizeFactor, 0);
+          setColor(tag.getTagName());
+          rect(startX, startY - h, w, h);
+          startY -= h;
+        }
+      } else {
+        w = 20;
+        for(int j = 0; j < day.size(); j++){
+          FETag tag = (FETag) day.get(j);
+          float h = (float) max(log(tag.size()) * resizeFactor, 0);
+          setColor(tag.getTagName());
+          rect(startX, startY - h, w, h);
+          startY -= h;
+        }
       }
-      startX += 20.0;
-//      if (i == selected_day){
-//        fill(1.0,1.0,0);
-//        beginShape();
-//          vertex(x, y);
-//          y = a[i-1];
-//          vertex(x, y);
-//          x += fe_timeline_day_selected_width / 2.0;
-//          y = a[i];
-//          vertex(x,y);
-//          x += fe_timeline_day_selected_width / 2.0;
-//          y = a[i+1];
-//          vertex(x, y);
-//          y = 0;
-//          vertex(x, y);
-//        endShape(CLOSE);
-//        
-//        x -= fe_timeline_day_selected_width;
-//        
-//        fill(1.0,0.0,0);
-//        beginShape();
-//          y = a[i-1];
-//          vertex(x, y);
-//          y = a[i-1] + b[i-1];
-//          vertex(x, y);
-//          x += fe_timeline_day_selected_width / 2.0;
-//          y = a[i] + b[i];
-//          vertex(x,y);
-//          x += fe_timeline_day_selected_width / 2.0;
-//          y = a[i+1] + b[i+1];
-//          vertex(x, y);
-//          y = a[i+1];
-//          vertex(x, y);
-//          x -= fe_timeline_day_selected_width / 2.0;
-//          y = a[i];
-//          vertex(x,y);
-//          x += fe_timeline_day_selected_width / 2.0;
-//        endShape(CLOSE);
-//      } else {
-//        fill(1.0,1.0,0);
-//        rect(x,0,fe_timeline_day_small_width,a[i]);
-//        fill(1.0,0,0);
-//        rect(x,a[i],fe_timeline_day_small_width, a[i] + b[i]);
-//        x += fe_timeline_day_small_width;
-//      }
+      startY = locationY;
+      startX += w;
     }
   }
 }
