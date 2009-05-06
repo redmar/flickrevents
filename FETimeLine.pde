@@ -1,5 +1,4 @@
 import java.lang.*;
-
 class FETimeLine implements Observer {
   FEDayCollection dayCollection;
   float resizeFactor;
@@ -8,20 +7,21 @@ class FETimeLine implements Observer {
   float selectedDateWidth;
   boolean update = false;
   boolean bounce = false;
+  boolean debug = false;
   
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
-    resizeFactor = (200/5) / (float) log(dayCollection.getMaxPhotos());
+    resizeFactor = (200/5) / (float) Math.log(dayCollection.getMaxPhotos());
     locationX = 20.0;
     locationY = 800.0;
   }
   
   void update(Observable obj, Object arg)
   {
-    selectedDate = (Date) arg;
+    selectedDate = ((FEDateView)obj).currentDate();
     update = true;
   }
-  
+      
   void step(){
     if (update){
       selectedDateWidth = 30;
@@ -96,7 +96,7 @@ class FETimeLine implements Observer {
         w = selectedDateWidth;
         for(int j = 0; j < day.size(); j++){
           FETag tag = (FETag) day.get(j);
-          float h = (float) max(log(tag.size()) * resizeFactor, 0);
+          float h = (float) Math.max(Math.log(tag.size()) * resizeFactor, 0);
           setColor(tag.getTagName());
           rect(startX, startY - h, w, h);
           startY -= h;
@@ -105,7 +105,7 @@ class FETimeLine implements Observer {
         w = 20;
         for(int j = 0; j < day.size(); j++){
           FETag tag = (FETag) day.get(j);
-          float h = (float) max(log(tag.size()) * resizeFactor, 0);
+          float h = (float) Math.max(Math.log(tag.size()) * resizeFactor, 0);
           setColor(tag.getTagName());
           rect(startX, startY - h, w, h);
           startY -= h;
@@ -115,4 +115,9 @@ class FETimeLine implements Observer {
       startX += w;
     }
   }
+  
+  void log(String what) {
+    if( DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
+  }
+  
 }

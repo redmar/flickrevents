@@ -4,6 +4,7 @@ class FEDateView extends Observable {
   PImage original_img;
   PApplet parent;
   PFont font;
+  boolean debug = false;
   
   GregorianCalendar calendar;
 
@@ -28,8 +29,8 @@ class FEDateView extends Observable {
   
   void initDateView() {
     calendar = new GregorianCalendar(2009, 3, 27);
-    System.out.println("Setting up calender to: " + currentFullDateString());
-    System.out.println("Setting up calender to date: " + currentDate());
+    log("Setting up calender to: " + currentFullDateString());
+    log("Setting up calender to date: " + currentDate());
     PFont font = createFont("FuturaLT", 48);
     textFont(font, 48); 
   }
@@ -81,9 +82,10 @@ class FEDateView extends Observable {
     }
     if ( Math.round(amount) > 0.999) { 
        calendar.add(calendar_type, count);  
+       setChanged();
+       notifyObservers();
        amount = 0;
     }
-    setChanged();
     notifyObservers(currentDate());
     last_time = current_time;
   }
@@ -104,5 +106,9 @@ class FEDateView extends Observable {
     ypos = (height-img_height-(height*0.02));
     midx = xpos + (img_width / 2);
     midy = ypos + (img_height / 2);
+  }
+
+  void log(String what) {
+    if( DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
   }
 }
