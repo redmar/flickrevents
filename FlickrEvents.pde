@@ -9,7 +9,7 @@ FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
-String cacheDir = "/users/rjk/Documents/Processing/FlickrEvents/cache/";
+String cacheDir = "/cache/";
 boolean w_event = true;
 boolean debug = false;
 
@@ -17,6 +17,8 @@ void setup() {
   smooth();
   colorMode(RGB, 1.0);
 
+  cacheDir = sketchPath + "/cache/";
+  log("cachedir:" + cacheDir);
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
@@ -24,7 +26,7 @@ void setup() {
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 
-  fe_worldmap = new FEWorldMap();
+  fe_worldmap = new FEWorldMap(null);
   dateView = new FEDateView(this);
   dateView.addObserver(fe_worldmap);
 
@@ -107,6 +109,17 @@ void keyPressed(){
     if(keyCode==RIGHT) {
       dateView.gotoNextDay(); 
 //      System.out.println("goto next day");
+    }
+    if(keyCode==UP) {
+      for (int i=0; i < springCount; i++) {
+        float oldx = springs[i].rest_posx; 
+        float oldy = springs[i].rest_posy;
+        float nx = oldx + random(100) - 50;
+        float ny = oldy + random(100) - 50;
+        springs[i].setPosition(nx, ny);
+        springs[i].setTempPosition(oldx, oldy);
+        springs[i].setRadius(3 + random(200));
+      }
     }
   }
 } 

@@ -8,7 +8,7 @@ class FEDayCollection extends ArrayList
   {
     for(int i = 0; i < size(); i++){
       FEDay day = (FEDay) get(i);
-      if (day.getDate() == date){
+      if (day.getDate().equals(date)){
         return day;
       }
     }

@@ -6,7 +6,7 @@ class FETimeLine implements Observer {
   Date selectedDate;
   float selectedDateWidth;
   boolean update = false;
-  boolean bounce = false;
+  boolean bounce = true;
   boolean debug = false;
   
   FETimeLine(FEDayCollection dayCollection){
@@ -56,20 +56,20 @@ class FETimeLine implements Observer {
   void setColor(String number)
   {
     if (number.equals("rock")){
-      fill(#FF0000,0.5);
-      stroke(#FF0000);
+      fill(#fc00ff,0.8);
+      stroke(#fc00ff);
     } else if (number.equals("classic")){
-      fill(#00FF00,0.5);
-      stroke(#00FF00);
+      fill(#00fcff,0.8);
+      stroke(#00fcff);
     } else if (number.equals("trance")){
-      fill(#0000FF,0.5);
-      stroke(#0000FF);
+      fill(#2f78ff,0.8);
+      stroke(#2f78ff);
     } else if (number.equals("pop")){
-       fill(#FFFF00,0.5);
-      stroke(#FFFF00);
+       fill(#a200ff,0.8);
+      stroke(#a200ff);  //a200ff
     } else if (number.equals("jazz")){
-      fill(#FF00FF,0.5);
-      stroke(#FF00FF);
+      fill(#FF0000,0.8);
+      stroke(#FF0000);
     }
   }
   

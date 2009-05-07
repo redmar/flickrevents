@@ -1,3 +1,7 @@
+int springCount = 0;
+int num = 30; 
+FESpring[] springs = new FESpring[num]; 
+
 class FEWorldMap implements Observer {
   PImage img;
   float xpos;
@@ -6,8 +10,11 @@ class FEWorldMap implements Observer {
   float img_width, img_height;
   Vector photoGroups;
   boolean debug = false;
+  Date selectedDate;
+  FEDayCollection dayCollection;
   
-  FEWorldMap() {
+  FEWorldMap(FEDayCollection aDayCollection) { //FEDayCollection
+    dayCollection = aDayCollection;
     img = loadImage("mapbw.png");  // Load the image into the program  
     img_width = width/2;
     img_height = height/2;
@@ -32,13 +39,15 @@ class FEWorldMap implements Observer {
     }
   }
   
-  void processMouseClick(float mx, float my) {
-    for (int i=0; i < photoGroups.size(); i++) {
-      if( ((FEPhotoGroup)photoGroups.get(i)).mouse_inside(mx,my, this) ) {
-        System.out.println("INSIDE " + ((FEPhotoGroup)photoGroups.get(i)));
-        ((FEPhotoGroup)photoGroups.get(i)).toggleShowPhotos();
-      }
-    }    
+  void processMouseClick(float mx, float my) { 
+    springs[springCount] = new FESpring( mx, my, 20, 0.80, 10, 0.9, springs, 0);
+    springs[springCount].setDisplayFunctor(new FECircleGraphic(20));
+    springCount++;
+    
+//    if( ((FEPhotoGroup)photoGroups.get(i)).mouse_inside(mx,my, this) ) {
+//      System.out.println("INSIDE " + ((FEPhotoGroup)photoGroups.get(i)));
+//      ((FEPhotoGroup)photoGroups.get(i)).toggleShowPhotos();
+//    }   
   }
 
   void step() {
@@ -68,9 +77,12 @@ class FEWorldMap implements Observer {
     img_height = height*0.8;
     xpos = (width*0.05);
     ypos = (height*0.1);
-
-    for (int i=0; i < photoGroups.size(); i++) {
-      ((FEPhotoGroup)photoGroups.get(i)).step(this);
+//
+//    for (int i=0; i < photoGroups.size(); i++) {
+//      ((FEPhotoGroup)photoGroups.get(i)).step(this);
+//    }
+    for (int i=0; i < springCount; i++) {
+      springs[i].update();
     }
   }
 
@@ -109,9 +121,14 @@ class FEWorldMap implements Observer {
     // render all the children (dots/photos etc)
     
 //    renderGeoPoint();
-    for (int i=0; i < photoGroups.size(); i++) {
-      ((FEPhotoGroup)photoGroups.get(i)).render(this);
+//    for (int i=0; i < photoGroups.size(); i++) {
+//      ((FEPhotoGroup)photoGroups.get(i)).render(this);
+//    }
+
+    for (int i=0; i < springCount; i++) {
+      springs[i].display();
     }
+
   }
   
   // equirectangular projection!
@@ -146,11 +163,39 @@ class FEWorldMap implements Observer {
  /* This function will be called by the FEDateView class when it's date has changed.
   * Meaning the whole GUI has to change/recalculate to the new date. */
   void update(Observable o, Object arg) { 
-    Date newDate = ((FEDateView)o).currentDate();
-    log("needs to change to the new date of: " + newDate); 
+//    Date newDate = ((FEDateView)o).currentDate();
+    selectedDate = ((FEDateView)o).currentDate();
+//    currentDay = dayCollection.getDay(selectedDate);
+//    update = true;
   }
   
   void log(String what) {
     if(DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
+  }
+}
+
+class FECircleGraphic extends FEGraphic
+{
+  float radius = 10.0;
+  
+  FECircleGraphic(float aradius) { 
+    this.radius = aradius; 
+  }
+  
+  void display(float xpos, float ypos) {
+    noStroke();
+    if (mouseover) {
+      fill(153,0,0); 
+    }
+    else {
+      fill(255,0,0); 
+    }
+    ellipseMode(CENTER);
+    ellipse(xpos, ypos, this.radius, this.radius);
+  }
+  
+  void setRadius(float asize) {
+    asize = max(asize,3.0);
+    this.radius = asize;
   }
 }
