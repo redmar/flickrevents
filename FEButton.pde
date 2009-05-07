@@ -18,7 +18,7 @@ class Button
   }
   
   void pressed() {
-    if(over && mousePressed || locked) {
+    if(over && mousePressed) {
       pressed = true;
       locked = true;
     } else {
@@ -44,6 +44,7 @@ class CheckBox extends Button
 {
   int selectedColor;
   boolean checked;
+  float spaceFactor = 0.15;
   
   CheckBox(int ix, int iy, int iw, int ih, int isc)
   {
@@ -61,6 +62,7 @@ class CheckBox extends Button
     pressed();
     if(!pressed && locked) {
       checked = !checked;
+      release();
     }
   }
   
@@ -72,7 +74,7 @@ class CheckBox extends Button
     if (checked){
       noStroke();
       fill(selectedColor,0.5);
-      rect(x+2,y+2, w-2, h-2);
+      rect(x+w*spaceFactor,y+h*spaceFactor, w+2-(2*w*spaceFactor), h+2-(2*h*spaceFactor));
     }
   }
 }
