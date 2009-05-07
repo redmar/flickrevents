@@ -6,7 +6,7 @@ class FETimeLine implements Observer {
   Date selectedDate;
   float selectedDateWidth;
   boolean update = false;
-  boolean bounce = false;
+  boolean bounce = true;
   boolean debug = false;
   float maxPhotosFactor;
   

@@ -1,17 +1,22 @@
 import java.util.*;
 
 class FEPhotoGroup {
-  float x, y, radius;
+  public float x, y, radius;
   Vector photos;
   boolean showPhotos = false;
   boolean fadingIn = false;
   float calculated_radius;
   float calculated_radius_end;
   float calculated_radius_begin = 0;
+  public FEWorldMap worldmap = null;
+  String tagname;
   
   FEPhotoGroup() {
     this(0, 0, 1);
   }
+  
+  void setTagname(String aTagname) { tagname = aTagname; }
+  String getTagname() { return tagname; }
   
   FEPhotoGroup(float x, float y, int radius) {
     this.radius = max(radius,1);
@@ -27,19 +32,23 @@ class FEPhotoGroup {
     }
   }
   
-  void addPhoto(Photo p) {
-    GeoData geo = p.getGeoData();
+  void addPhoto(FEFlickrPhoto p) {
+//    GeoData geo = p.getGeoData();
 
     if( !photos.contains(p) ) {
       photos.add(p);
-      if( photos.size() == 1) { x = geo.getLongitude(); y = geo.getLatitude(); }
+      if( photos.size() == 1) { x = Float.parseFloat(p.getLongitude()); y = Float.parseFloat(p.getLatitude()); }
       else {
-        x = (x+geo.getLongitude())/2;
-        y = (y+geo.getLatitude())/2; 
+        x = (x+Float.parseFloat(p.getLongitude()))/2;
+        y = (y+Float.parseFloat(p.getLatitude()))/2; 
       }
     }
   }
 
+  boolean is_inside(String latitude, String longitude) {
+    return is_inside(Float.parseFloat(latitude), Float.parseFloat(longitude));
+  }
+  
   boolean is_inside(float latitude, float longitude) {
     return dist(x, y, latitude, longitude) < 0.005 ;  
   }
@@ -84,6 +93,10 @@ class FEPhotoGroup {
   void toggleShowPhotos() {
     showPhotos = !showPhotos;
   }
+  
+  float getX() { return worldmap.longToX(x); } 
+  float getY() { return worldmap.latToY(y); } 
+  float getRadius() { return (radius*2)*(max(photos.size(),1)); }
   
   boolean mouse_inside(float mx, float my, FEWorldMap worldmap) {
     float pointXlong = worldmap.longToX(x);
