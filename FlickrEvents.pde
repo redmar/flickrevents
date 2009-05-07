@@ -9,18 +9,19 @@ FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
-String cacheDir = "/users/rjk/Documents/Processing/FlickrEvents/cache/";
+String cacheDir;
 boolean w_event = true;
 boolean debug = false;
 
 void setup() {
   smooth();
   colorMode(RGB, 1.0);
-
+  cacheDir = sketchPath + "/cache/";
+  
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
-
+  
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 

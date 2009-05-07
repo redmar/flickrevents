@@ -8,7 +8,7 @@ class FEDayCollection extends ArrayList
   {
     for(int i = 0; i < size(); i++){
       FEDay day = (FEDay) get(i);
-      if (day.getDate() == date){
+      if (day.getDate().equals(date)){
         return day;
       }
     }
@@ -87,6 +87,26 @@ class FETag extends ArrayList
       }
     }
     return null;
+  }
+  
+  void setColor(float a)
+  {
+    if (tag.equals("rock")){
+      fill(#FF0000,a);
+      stroke(#FF0000);
+    } else if (tag.equals("classic")){
+      fill(#00FF00,a);
+      stroke(#00FF00);
+    } else if (tag.equals("trance")){
+      fill(#0000FF,a);
+      stroke(#0000FF);
+    } else if (tag.equals("pop")){
+       fill(#FFFF00,a);
+      stroke(#FFFF00);
+    } else if (tag.equals("jazz")){
+      fill(#FF00FF,a);
+      stroke(#FF00FF);
+    }
   }
 }
 
