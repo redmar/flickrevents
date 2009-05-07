@@ -276,14 +276,21 @@ class FECircleGraphic extends FEGraphic
 //      fill(255,0,0); 
     }
     if (mytag != null) {
-      mytag.setColor(0.5);
+      fill(getTagColor(mytag.getTagName()),0.5);
+      stroke(getTagColor(mytag.getTagName()), 0.5);
     }
     ellipseMode(CENTER);
-    ellipse(xpos, ypos, this.radius, this.radius);
+//    for(int r = 1; r < 25; r += 5) {
+//      float logsize = (float)Math.log(max(this.radius*r*2,1.0))*5;
+      ellipse(xpos, ypos, radius, radius);      
+//    }
   }
   
-  void setRadius(float asize) {
-    asize = max(asize,3.0);
+  void setRadius(float asize) 
+  {
+    float logsize = (float)Math.log(max(asize,1.0));
+//    System.out.println(logsize);
+    asize = max(logsize*15,5.0);
     this.radius = asize;
   }
   

@@ -139,3 +139,20 @@ void keyReleased() {
 void log(String what) {
   if( DEBUG || this.debug ) System.out.println(getClass() + " : " + what);
 }
+
+static int getTagColor(String tag)
+{
+  if (tag.equals("rock")){
+    return #FF0000;
+  } else if (tag.equals("classic")){
+    return #00FF00;
+  } else if (tag.equals("trance")){
+    return #0000FF;
+  } else if (tag.equals("pop")){
+    return #FFFF00;
+  } else if (tag.equals("jazz")){
+    return #FF00FF;
+  }
+  return -1;
+}
+
