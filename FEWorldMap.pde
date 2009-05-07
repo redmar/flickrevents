@@ -17,11 +17,9 @@ class FEWorldMap implements Observer {
   
   FEWorldMap(FEDayCollection aDayCollection) { //FEDayCollection
     dayCollection = aDayCollection;
-    img = loadImage("mapbw.png");  // Load the image into the program  
-    img_width = width/2;
-    img_height = height/2;
-    xpos = (width/2)-(img_width/2);
-    ypos = (height/2)-(img_height/2);
+    img = loadImage("mapbw.png");  // Load the image into the program
+    xpos = 10;//(width/2)-(img_width/2);
+    ypos = 50;//(height/2)-(img_height/2);
     photoGroups = new Vector();
   }
 
@@ -115,10 +113,10 @@ class FEWorldMap implements Observer {
 //      ypos = constrain(ypos, 0, (height/2)+(img_height));
 //    }  
 
-    img_width = width*0.7;
-    img_height = height*0.8;
-    xpos = (width*0.05);
-    ypos = (height*0.1);
+    img_width = width-270;
+    img_height = height-220;
+//    xpos = (width*0.05);
+//    ypos = (height*0.1);
 //
     for (int i=0; i < photoGroups.size(); i++) {
       ((FEPhotoGroup)photoGroups.get(i)).step(this);

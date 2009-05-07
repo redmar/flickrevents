@@ -8,18 +8,15 @@ class FETimeLine implements Observer {
   boolean update = false;
   boolean bounce = true;
   boolean debug = false;
-  float maxPhotosFactor;
+  float totalWidth;
+  
   
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
-    maxPhotosFactor = 30 / (float) dayCollection.getMaxPhotos();
-    resizeFactor = (400/5) / (float) Math.log(31);
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     selectedDateWidth = 60;
     selectedDate = calendar.getTime();
-    locationX = 20.0;
-    stdBinWidth = 10.0;
-    locationY = 760.0;
+    locationX = 10;
   }
   
   void update(Observable obj, Object arg)
@@ -29,6 +26,8 @@ class FETimeLine implements Observer {
   }
       
   void step(){
+    locationY = height - 10;
+    stdBinWidth = (float) Math.floor((width - 300) / dayCollection.size()/2);
   }
   
   void render(){
@@ -74,7 +73,6 @@ class FETimeLine implements Observer {
         tag.setColor(0.4);
       }
       
-      h = (float) Math.log(1+maxPhotosFactor*tag.size()) * resizeFactor;
       h = (float) tag.size() * resizeFactor;
       rect(startX, startY - h, binWidth, h);
       
@@ -82,7 +80,6 @@ class FETimeLine implements Observer {
       tag.setColor(0.4);
       if (nextDay != null){
         FETag nextTag = nextDay.getTag(tagOrder[i]);
-        nextH = (float) Math.log(1+maxPhotosFactor*nextTag.size()) * resizeFactor;
         nextH = (float) nextTag.size() * resizeFactor;
         quad(startX + binWidth, startY - h, startX + stdBinWidth + binWidth, nextY - nextH, startX + stdBinWidth + binWidth, nextY, startX + binWidth, startY);
       

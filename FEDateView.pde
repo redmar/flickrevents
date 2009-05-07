@@ -31,8 +31,6 @@ class FEDateView extends Observable {
     calendar = new GregorianCalendar(2009, 3, 27);
     log("Setting up calender to: " + currentFullDateString());
     log("Setting up calender to date: " + currentDate());
-    PFont font = createFont("FuturaLT", 32);
-    textFont(font, 32); 
   }
 
   Date currentDate() {
@@ -96,7 +94,7 @@ class FEDateView extends Observable {
 //    fill(0, 1.0, 0, 0.5);
 //    rect(xpos, ypos, this.img_width, this.img_height);      
     fill(1.0, 1.0, 1.0, 1.0);
-    text(currentFullDateString(), xpos, midy);
+    //text(currentFullDateString(), xpos, midy);
   }
   
   void step() {

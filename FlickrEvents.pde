@@ -11,9 +11,11 @@ FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
+FEGui gui;
 String cacheDir;
 boolean w_event = true;
 boolean debug = false;
+PFont font = createFont("FuturaLT", 32);
 GregorianCalendar calendar = new GregorianCalendar(2009, 3, 27);
 
 void setup() {
@@ -28,7 +30,7 @@ void setup() {
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
-  
+  gui = new FEGui();
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 
@@ -82,6 +84,9 @@ void setup() {
 
 void draw() {
   background(0);
+  
+  gui.step();
+  gui.render();
 
   fe_worldmap.step();
   fe_worldmap.render();
