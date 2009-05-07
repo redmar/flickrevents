@@ -9,44 +9,43 @@ FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
-String cacheDir = "/cache/";
+String cacheDir;
 boolean w_event = true;
 boolean debug = false;
 
 void setup() {
   smooth();
   colorMode(RGB, 1.0);
-
   cacheDir = sketchPath + "/cache/";
   log("cachedir:" + cacheDir);
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
-
+  
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 
-  fe_worldmap = new FEWorldMap(null);
-  dateView = new FEDateView(this);
-  dateView.addObserver(fe_worldmap);
 
   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   if(search_on_startup) {
-    try {
-      GregorianCalendar calendar = new GregorianCalendar(2009, 3, 28);
-      for(int i = 0; i < 31; i++){
-        calendar.add(Calendar.DATE, -1);
-        String prevDay = df.format(calendar.getTime());
-        if (!new File(cacheDir+prevDay).exists()){
-          FEFlickrData fe_data = new FEFlickrData(prevDay);
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      GregorianCalendar calendar = new GregorianCalendar(2009, 3, 28);
+//      for(int i = 0; i < 31; i++){
+//        calendar.add(Calendar.DATE, -1);
+//        String prevDay = df.format(calendar.getTime());
+//        if (!new File(cacheDir+prevDay).exists()){
+//          FEFlickrData fe_data = new FEFlickrData(prevDay);
+//        }
+//      }
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
   } else {
     FECacheReader cacheReader = new FECacheReader();
     FEDayCollection dayCollection = cacheReader.getDayCollection();
+    fe_worldmap = new FEWorldMap(dayCollection);
+    dateView = new FEDateView(this);
+    dateView.addObserver(fe_worldmap);
     fe_timeline = new FETimeLine(dayCollection);
     dateView.addObserver(fe_timeline);
 //    try {

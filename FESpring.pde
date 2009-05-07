@@ -144,5 +144,15 @@ class FESpring
     rest_posx = xpos;
     rest_posy = ypos;
   } 
+  
+  void moveTo(float movetox, float movetoy) {
+    float oldx = rest_posx; 
+    float oldy = rest_posy;
+    float nx = movetox;
+    float ny = movetoy;
+    setPosition(nx, ny);
+    setTempPosition(oldx, oldy);
+//    springs[i].setRadius(3 + random(200));
+  }
 } 
 
