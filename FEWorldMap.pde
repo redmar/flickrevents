@@ -82,9 +82,9 @@ class FEWorldMap implements Observer {
   }
   
   void processMouseClick(float mx, float my) { 
-    springs[springCount] = new FESpring( mx, my, 20, 0.80, 10, 0.9, springs, 0);
-    springs[springCount].setDisplayFunctor(new FECircleGraphic(20));
-    springCount++;
+//    springs[springCount] = new FESpring( mx, my, 20, 0.80, 10, 0.9, springs, 0);
+//    springs[springCount].setDisplayFunctor(new FECircleGraphic(20));
+//    springCount++;
     
 //    if( ((FEPhotoGroup)photoGroups.get(i)).mouse_inside(mx,my, this) ) {
 //      System.out.println("INSIDE " + ((FEPhotoGroup)photoGroups.get(i)));

@@ -15,7 +15,6 @@ String cacheDir;
 boolean w_event = true;
 boolean debug = false;
 GregorianCalendar calendar = new GregorianCalendar(2009, 3, 27);
-CheckBox check = new CheckBox(10,10,20,20,#FF0000);
 
 void setup() {
   smooth();
@@ -96,9 +95,6 @@ void draw() {
   
   dateView.step();
   dateView.render();
-  
-  check.update();
-  check.display();
 }
 
 void mouseClicked() {
