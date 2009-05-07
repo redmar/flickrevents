@@ -25,7 +25,7 @@ void setup() {
   for(int i = 0; i < tagOrder.length; i++){
     selectedTags.add(tagOrder[i]);
   }
-  
+  log("cachedir:" + cacheDir);
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
@@ -33,26 +33,26 @@ void setup() {
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 
-  fe_worldmap = new FEWorldMap();
-  dateView = new FEDateView(this);
-  dateView.addObserver(fe_worldmap);
 
   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   if(search_on_startup) {
-    try {
-      for(int i = 0; i < 31; i++){
-        calendar.add(Calendar.DATE, -1);
-        String prevDay = df.format(calendar.getTime());
-        if (!new File(cacheDir+prevDay).exists()){
-          FEFlickrData fe_data = new FEFlickrData(prevDay);
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      for(int i = 0; i < 31; i++){
+//        calendar.add(Calendar.DATE, -1);
+//        String prevDay = df.format(calendar.getTime());
+//        if (!new File(cacheDir+prevDay).exists()){
+//          FEFlickrData fe_data = new FEFlickrData(prevDay);
+//        }
+//      }
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
   } else {
     FECacheReader cacheReader = new FECacheReader();
     FEDayCollection dayCollection = cacheReader.getDayCollection();
+    fe_worldmap = new FEWorldMap(dayCollection);
+    dateView = new FEDateView(this);
+    dateView.addObserver(fe_worldmap);
     fe_timeline = new FETimeLine(dayCollection);
     dateView.addObserver(fe_timeline);
 //    try {
@@ -118,6 +118,17 @@ void keyPressed(){
     if(keyCode==RIGHT) {
       dateView.gotoNextDay(); 
 //      System.out.println("goto next day");
+    }
+    if(keyCode==UP) {
+      for (int i=0; i < springCount; i++) {
+        float oldx = springs[i].rest_posx; 
+        float oldy = springs[i].rest_posy;
+        float nx = oldx + random(100) - 50;
+        float ny = oldy + random(100) - 50;
+        springs[i].setPosition(nx, ny);
+        springs[i].setTempPosition(oldx, oldy);
+        springs[i].setRadius(3 + random(200));
+      }
     }
   }
 } 
