@@ -1,7 +1,7 @@
 import java.util.*;
 //ArrayList with days
 class FEDayCollection extends ArrayList
-{
+{  
   public FEDayCollection() { }
   
   public FEDay getDay(Date date)
@@ -46,7 +46,9 @@ class FEDay extends ArrayList
     int result = 0;
     for (int i = 0; i < size(); i++){
       FETag tag = (FETag) get(i);
-      result += tag.size();
+      if (selectedTags.contains(tag.getTagName())){
+        result += tag.size();
+      }
     }
     return result;
   }
@@ -169,5 +171,9 @@ class FEFlickrPhoto
   
   public String getTags(){
     return tags;
+  }
+  
+  public String getFlickrURL() {
+    return "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret + ".jpg";
   }
 }

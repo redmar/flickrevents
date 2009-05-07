@@ -2,6 +2,8 @@
 // Global Preferences ////////////////
 static final boolean DEBUG = true;
 boolean search_on_startup  = false;
+String[] tagOrder = {"rock","classic","trance","pop","jazz"};
+ArrayList selectedTags;
 //////////////////////////////////////
 
 FETimeLine fe_timeline;  
@@ -12,11 +14,17 @@ FEDateView dateView;
 String cacheDir;
 boolean w_event = true;
 boolean debug = false;
+GregorianCalendar calendar = new GregorianCalendar(2009, 3, 27);
+CheckBox check = new CheckBox(10,10,20,20,#FF0000);
 
 void setup() {
   smooth();
   colorMode(RGB, 1.0);
   cacheDir = sketchPath + "/cache/";
+  selectedTags = new ArrayList();
+  for(int i = 0; i < tagOrder.length; i++){
+    selectedTags.add(tagOrder[i]);
+  }
   
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
@@ -32,7 +40,6 @@ void setup() {
   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
   if(search_on_startup) {
     try {
-      GregorianCalendar calendar = new GregorianCalendar(2009, 3, 28);
       for(int i = 0; i < 31; i++){
         calendar.add(Calendar.DATE, -1);
         String prevDay = df.format(calendar.getTime());
@@ -89,6 +96,9 @@ void draw() {
   
   dateView.step();
   dateView.render();
+  
+  check.update();
+  check.display();
 }
 
 void mouseClicked() {

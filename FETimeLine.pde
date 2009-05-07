@@ -9,13 +9,14 @@ class FETimeLine implements Observer {
   boolean bounce = false;
   boolean debug = false;
   float maxPhotosFactor;
-  String[] tagOrder = {"rock","classic","trance","pop","jazz"};
   
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
     maxPhotosFactor = 30 / (float) dayCollection.getMaxPhotos();
     resizeFactor = (400/5) / (float) Math.log(31);
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
+    selectedDateWidth = 60;
+    selectedDate = calendar.getTime();
     locationX = 20.0;
     stdBinWidth = 10.0;
     locationY = 760.0;
@@ -28,14 +29,6 @@ class FETimeLine implements Observer {
   }
       
   void step(){
-//    if (update){
-//      selectedDateWidth = 30;
-//      update = false;
-//    } else if (selectedDateWidth < 200 && selectedDateWidth != 150) {
-//      selectedDateWidth += 100;
-//    } else {
-      selectedDateWidth = 60;
-//    }
   }
   
   void render(){
@@ -55,7 +48,7 @@ class FETimeLine implements Observer {
         startX += selectedDateWidth + stdBinWidth;
       } else {
         renderDay(startX, day, nextDay, false);
-        startX += 20;
+        startX += stdBinWidth*2;
       }
     }
   }
@@ -64,7 +57,7 @@ class FETimeLine implements Observer {
     float startY = locationY, nextY = locationY, binWidth;
     if (isSelected){
       noStroke();
-      fill(0.5);
+      fill(0.1);
       rect(startX, locationY - 200, selectedDateWidth, 200);
       binWidth = selectedDateWidth;
     } else {
