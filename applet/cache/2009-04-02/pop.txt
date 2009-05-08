@@ -1,3 +1,0 @@
-<photo id="3407917766" owner="31613136@N00" owner_name="margarita gonzalez | margaritaland.com" secret="5b12b32697" server="3556" farm="4" latitude="25.785303" longitude="-80.18749" tags="music,english,festival,female,florida,miami,duo,pop,singer,ultra,2009,katiewhite,thetingtings,"/>
-<photo id="3406981170" owner="13944797@N04" owner_name="icedcupcake" secret="de59877a25" server="3655" farm="4" latitude="-37.82114" longitude="144.97824" tags="show,music,glitter,lights,concert,performance,melbourne,pop,sparkle,kylieminogue,"/>
-<photo id="3406980940" owner="13944797@N04" owner_name="icedcupcake" secret="11b177e3c8" server="3436" farm="4" latitude="-37.82114" longitude="144.97824" tags="music,concert,performance,melbourne,pop,acrobatics,kylieminogue,"/>

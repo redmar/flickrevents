@@ -1,2 +1,0 @@
-<photo id="3451975951" owner="14731875@N00" owner_name="ninanord" secret="867d0255cd" server="3396" farm="4" latitude="59.919205" longitude="10.757439" tags="music,streetart,window,oslo,live,jazz,consert,soundofmu,"/>
-<photo id="3451816741" owner="9121546@N05" owner_name="ntrlwmn" secret="b9510536c4" server="3606" farm="4" latitude="40.731388" longitude="-74.27307" tags="music,canon,guitar,cd,jazz,powershot,stereo,rb,guitarpick,guitarstrings,cdtower,a540,"/>
