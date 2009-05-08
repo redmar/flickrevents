@@ -8,6 +8,16 @@ class Button
   boolean pressed = false;
   boolean locked = false;
   
+  Button(){
+  }
+  
+  Button(int ix, int iy, int iw, int ih){
+    x = ix;
+    y = iy;
+    w = iw;
+    h = ih;
+  }
+  
   void over() 
   {
     if( overRect(x, y, w, h) ) {

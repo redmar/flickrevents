@@ -14,6 +14,7 @@ FEPhotoGroup pg;  //tmp
 FEPhoto photo;    // tmp
 FEDateView dateView;
 FEGui gui;
+Button leftButton = new Button(), rightButton = new Button();
 String cacheDir;
 boolean w_event = true;
 boolean debug = false;
@@ -104,6 +105,14 @@ void mousePressed() {
 
 void mouseReleased() {
   fe_worldmap.processMouseReleased(mouseX, mouseY);
+  leftButton.over();
+  rightButton.over();
+  if (leftButton.over){
+    dateView.gotoPrevDay();
+  }
+  if (rightButton.over){
+    dateView.gotoNextDay();
+  }
 }
 
 void keyPressed(){

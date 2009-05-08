@@ -4,7 +4,6 @@ class FEGui implements Observer
   FEDayCollection dayCollection;
   Date selectedDate;
   boolean update = false;
-  Button left, right;
   
   FEGui(FEDayCollection dayCollection)
   {
@@ -92,6 +91,16 @@ class FEGui implements Observer
     text(dateView.currentDayString(), width - 140, height - 100);
     text(dateView.currentMonthString(), width - 155, height - 65);
     text(dateView.currentYearString(), width - 155, height - 25);
+    leftButton.x = width - 230;
+    leftButton.y = height - 125;
+    leftButton.w = 75;
+    leftButton.h = 100;
+    leftButton.x = width - 20;
+    leftButton.y = height - 125;
+    leftButton.w = 75;
+    leftButton.h = 100;
+    triangle(width - 230, height - 73, width - 175, height - 125, width - 175, height - 20);
+    triangle(width - 20, height - 73, width - 75, height - 125, width - 75, height - 20);
     
     //Filter CheckBoxes
     textFont(font, 20);
