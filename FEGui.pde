@@ -95,10 +95,10 @@ class FEGui implements Observer
     leftButton.y = height - 125;
     leftButton.w = 75;
     leftButton.h = 100;
-    leftButton.x = width - 20;
-    leftButton.y = height - 125;
-    leftButton.w = 75;
-    leftButton.h = 100;
+    rightButton.x = width - 75;
+    rightButton.y = height - 125;
+    rightButton.w = 75;
+    rightButton.h = 100;
     triangle(width - 230, height - 73, width - 175, height - 125, width - 175, height - 20);
     triangle(width - 20, height - 73, width - 75, height - 125, width - 75, height - 20);
     
