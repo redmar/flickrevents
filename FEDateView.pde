@@ -93,17 +93,18 @@ class FEDateView extends Observable {
 //    stroke(0.0, 1.0, 0);
 //    fill(0, 1.0, 0, 0.5);
 //    rect(xpos, ypos, this.img_width, this.img_height);      
-    fill(1.0, 1.0, 1.0, 1.0);
-    //text(currentFullDateString(), xpos, midy);
+//    fill(1.0, 1.0, 1.0, 1.0);
+//    currentDayString() + " " + currentMonthString() + " " + currentYearString();
+//    text(currentFullDateString(), xpos, midy);
   }
   
   void step() {
-    img_width = width*0.25;
-    img_height = height*0.2;
-    xpos = (width-img_width-(width*0.02));
-    ypos = (height-img_height-(height*0.02));
-    midx = xpos + (img_width / 2);
-    midy = ypos + (img_height / 2);
+//    img_width = width*0.25;
+//    img_height = height*0.2;
+//    xpos = (width-img_width-(width*0.02));
+//    ypos = (height-img_height-(height*0.02));
+//    midx = xpos + (img_width / 2);
+//    midy = ypos + (img_height / 2);
   }
 
   void log(String what) {

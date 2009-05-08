@@ -10,13 +10,12 @@ class FETimeLine implements Observer {
   boolean debug = false;
   float totalWidth;
   
-  
   FETimeLine(FEDayCollection dayCollection){
     this.dayCollection = dayCollection;
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     selectedDateWidth = 60;
     selectedDate = calendar.getTime();
-    locationX = 10;
+    locationX = 110;
   }
   
   void update(Observable obj, Object arg)
@@ -26,8 +25,8 @@ class FETimeLine implements Observer {
   }
       
   void step(){
-    locationY = height - 10;
-    stdBinWidth = (float) Math.floor((width - 300) / dayCollection.size()/2);
+    locationY = height - 30;
+    stdBinWidth = (float) Math.floor((width - 400) / dayCollection.size()/2);
   }
   
   void render(){
@@ -56,12 +55,15 @@ class FETimeLine implements Observer {
     float startY = locationY, nextY = locationY, binWidth;
     if (isSelected){
       noStroke();
-      fill(0.1);
-      rect(startX, locationY - 200, selectedDateWidth, 200);
+      fill(1,1,1,0.1);
+      rect(startX, locationY - 200, selectedDateWidth, 200 + stdBinWidth+5);
       binWidth = selectedDateWidth;
     } else {
       binWidth = stdBinWidth;
     }
+    fill(1);
+    textFont(font,stdBinWidth);
+    text(df.format(day.getDate()),startX + (binWidth/2 - 1- (stdBinWidth/2)), startY + stdBinWidth+3);
     for(int i = 0; i < tagOrder.length; i++){
       float h, nextH;
       

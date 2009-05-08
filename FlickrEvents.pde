@@ -3,7 +3,9 @@
 static final boolean DEBUG = true;
 boolean search_on_startup  = false;
 String[] tagOrder = {"rock","classic","trance","pop","jazz"};
-ArrayList selectedTags;
+ArrayList selectedTags = new ArrayList(Arrays.asList(tagOrder));
+String[] unwantedTags = {"rock","classic","trance","pop","jazz","music"};
+ArrayList tagFilter = new ArrayList(Arrays.asList(unwantedTags));
 //////////////////////////////////////
 
 FETimeLine fe_timeline;  
@@ -22,15 +24,11 @@ void setup() {
   smooth();
   colorMode(RGB, 1.0);
   cacheDir = sketchPath + "/cache/";
-  selectedTags = new ArrayList();
-  for(int i = 0; i < tagOrder.length; i++){
-    selectedTags.add(tagOrder[i]);
-  }
+
   log("cachedir:" + cacheDir);
   frame.setResizable(true); 
 //  size(screen.width, screen.height-50);
   size(1024, 768);
-  gui = new FEGui();
 //  pg = new FEPhotoGroup(200,200,30);
 //  photo = new FEPhoto(this);
 
@@ -56,6 +54,8 @@ void setup() {
     dateView.addObserver(fe_worldmap);
     fe_timeline = new FETimeLine(dayCollection);
     dateView.addObserver(fe_timeline);
+    gui = new FEGui(dayCollection);
+    dateView.addObserver(gui);
 //    try {
 //      for (int i = 0; i < dayCollection.size(); i++){
 //        FEDay day = (FEDay) dayCollection.get(i);
@@ -155,5 +155,52 @@ static int getTagColor(String tag)
     return #FF00FF;
   }
   return -1;
+}
+
+
+HashMap addHashMapValues(HashMap first, HashMap second){
+  ArrayList mapKeys = new ArrayList(second.keySet());
+  for(int i = 0; i < mapKeys.size(); i++){
+    int count = (Integer) second.get(mapKeys.get(i));
+    if (first.containsKey(mapKeys.get(i))){
+      count += (Integer) first.get(mapKeys.get(i));
+    }
+    first.put(mapKeys.get(i), count);
+  }
+  return first;
+}
+
+LinkedHashMap sortHashMapByValuesD(HashMap passedMap, boolean descending) {
+  ArrayList mapKeys = new ArrayList(passedMap.keySet());
+  ArrayList mapValues = new ArrayList(passedMap.values());
+  Collections.sort(mapValues);
+  Collections.sort(mapKeys);
+  
+  if (descending){
+    Collections.reverse(mapValues);
+  }
+      
+  LinkedHashMap sortedMap = 
+      new LinkedHashMap();
+  
+  Iterator valueIt = mapValues.iterator();
+  while (valueIt.hasNext()) {
+    Object val = valueIt.next();
+    Iterator keyIt = mapKeys.iterator();
+    
+    while (keyIt.hasNext()) {
+      Object key = keyIt.next();
+      String comp1 = passedMap.get(key).toString();
+      String comp2 = val.toString();
+      
+      if (comp1.equals(comp2)){
+          passedMap.remove(key);
+          mapKeys.remove(key);
+          sortedMap.put((String)key, (Object)val);
+          break;
+      }
+    }
+  }
+  return sortedMap;
 }
 

@@ -30,6 +30,7 @@ class FEDayCollection extends ArrayList
 class FEDay extends ArrayList
 {
   Date date;
+  HashMap sortedTags, sortedUsers;
   
   public FEDay(Date date)
   {
@@ -63,12 +64,39 @@ class FEDay extends ArrayList
     }
     return null;
   }
+  
+  HashMap getSortedTags()
+  {
+    HashMap unsorted = new HashMap();
+    for(int i = 0; i < size(); i++){
+      FETag tag = (FETag) get(i);
+      if (selectedTags.contains(tag.getTagName())){
+        unsorted = addHashMapValues(unsorted, tag.getSortedTags());
+      }
+    }
+    sortedTags = sortHashMapByValuesD(unsorted, true);
+    return sortedTags;
+  }
+  
+  HashMap getSortedUsers()
+  {
+    HashMap unsorted = new HashMap();
+    for(int i = 0; i < size(); i++){
+      FETag tag = (FETag) get(i);
+      if (selectedTags.contains(tag.getTagName())){
+        unsorted = addHashMapValues(unsorted, tag.getSortedUsers());
+      }
+    }
+    sortedUsers = sortHashMapByValuesD(unsorted, true);
+    return sortedUsers;
+  }
 }
 
 //ArrayList with photos
 class FETag extends ArrayList
 {
   String tag;
+  HashMap sortedTags, sortedUsers;
   
   public FETag(String tag)
   {
@@ -96,6 +124,46 @@ class FETag extends ArrayList
       fill(getTagColor(tag),a);
       stroke(getTagColor(tag));
   }
+  
+  HashMap getSortedTags()
+  {
+    if (sortedTags == null){
+      HashMap unsorted = new HashMap();
+      for(int i = 0; i < size(); i++){
+        FEFlickrPhoto photo = (FEFlickrPhoto) get(i);
+        ArrayList tags = photo.getTags();
+        for(int j = 0; j < tags.size(); j++){
+          int count = 0;
+          if (unsorted.containsKey(tags.get(j))){
+            count = (Integer) unsorted.get(tags.get(j));
+          }
+          count++;
+          unsorted.put(tags.get(j) ,count); 
+        }
+      }
+      sortedTags = sortHashMapByValuesD(unsorted, true);
+    }
+    return sortedTags;
+  }
+  
+  HashMap getSortedUsers()
+  {
+    if (sortedUsers == null){
+      HashMap unsorted = new HashMap();
+      int count = 0;
+      for(int i = 0; i < size(); i++){
+        FEFlickrPhoto photo = (FEFlickrPhoto) get(i);
+        if (unsorted.containsKey(photo.getOwnerName())){
+          count = (Integer) unsorted.get(photo.getOwnerName());
+        }
+        count++;
+        unsorted.put(photo.getOwnerName(),count); 
+      }
+      sortedUsers = sortHashMapByValuesD(unsorted, true);
+    }
+    return sortedUsers;
+  }
+
 }
 
 class FEFlickrPhoto
@@ -155,8 +223,15 @@ class FEFlickrPhoto
     return longitude;
   }
   
-  public String getTags(){
-    return tags;
+  public ArrayList getTags(){
+    String[] tagArray = tags.split(",");
+    ArrayList tagList = new ArrayList();
+    for(int i = 0; i < tagArray.length; i++){
+      if (!tagFilter.contains(tagArray[i])){
+        tagList.add(tagArray[i]);
+      }
+    }
+    return tagList;
   }
   
   public String getFlickrURL() {
