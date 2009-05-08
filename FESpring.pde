@@ -10,9 +10,12 @@ class FESpring
   float restsize = 20;
   float velsize = 0.0;
   
+  FEPhotoGroup associated_photogroup = null;
+  boolean showPhotos = false;
+  
   boolean over = false; 
   boolean move = false; 
-
+ 
   // Spring simulation constants 
   float mass;       // Mass 
   float k = 0.2;    // Spring constant 
@@ -73,7 +76,7 @@ class FESpring
     tempxpos = tempxpos + velx;           // Updated position 
 
     
-    if ((over() || move) && !otherOver() ) { 
+    if ((over() || move) /*&& !otherOver()*/ ) { 
       over = true; 
     } else { 
       over = false; 
@@ -81,7 +84,7 @@ class FESpring
   } 
   
   void setPosition(float x, float y) {
-    rest_posx = x; rest_posy = y;
+    xpos = rest_posx = x; ypos = rest_posy = y;
   }
   
   void setTempPosition(float x, float y) {
@@ -90,9 +93,7 @@ class FESpring
 
   // Test to see if mouse is over this spring
   boolean over() {
-    float disX = tempxpos - mouseX;
-    float disY = tempypos - mouseY;
-    if (sqrt(sq(disX) + sq(disY)) < size/2 ) {
+    if (dist(tempxpos, tempypos, mouseX, mouseY) < tempsize) {
       return true;
     } else {
       return false;
@@ -120,13 +121,22 @@ class FESpring
   { 
     if (displayFunctor == null) return;
     
+    line(tempxpos, tempypos, xpos, ypos);
+    
     if (over) { 
       displayFunctor.setMouseOver(true);
       displayFunctor.display(tempxpos,tempypos);
     } else { 
       displayFunctor.setMouseOver(false);
       displayFunctor.display(tempxpos,tempypos);
-    } 
+    }
+    
+    if (showPhotos) {
+      stroke(1.0, 1.0, 1.0, 1.0);
+      fill(1.0, 1.0, 1.0, 1.0);
+      rect(tempxpos, tempypos, 30, 30);
+      // for each photo 
+    }
   } 
 
   void pressed() 
@@ -140,8 +150,11 @@ class FESpring
 
   void released() 
   { 
+    if (over) { 
+      if(associated_photogroup!=null) { showPhotos = !showPhotos; }
+    }
     move = false; 
-    rest_posx = xpos;
+    rest_posx = xpos;  
     rest_posy = ypos;
   } 
   
@@ -153,6 +166,14 @@ class FESpring
     setPosition(nx, ny);
     setTempPosition(oldx, oldy);
 //    springs[i].setRadius(3 + random(200));
+  }
+  
+  void setPhotogroup(FEPhotoGroup pg) {
+    showPhotos = false;
+    associated_photogroup = pg;
+  }
+  FEPhotoGroup getPhotogroup() {
+    return associated_photogroup;
   }
 } 
 

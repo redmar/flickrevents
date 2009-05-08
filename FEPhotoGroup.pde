@@ -2,7 +2,7 @@ import java.util.*;
 
 class FEPhotoGroup {
   public float x, y, radius;
-  Vector photos;
+  public Vector photos;
   boolean showPhotos = false;
   boolean fadingIn = false;
   float calculated_radius;

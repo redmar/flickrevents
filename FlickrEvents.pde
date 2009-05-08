@@ -91,10 +91,6 @@ void draw() {
   fe_worldmap.step();
   fe_worldmap.render();
 
-//  pg.render();
-
-//  photo.step().render();
-
   fe_timeline.step();
   fe_timeline.render();
   
@@ -102,9 +98,12 @@ void draw() {
   dateView.render();
 }
 
-void mouseClicked() {
-  System.out.println("click");
-  fe_worldmap.processMouseClick(mouseX, mouseY);
+void mousePressed() {
+  fe_worldmap.processMousePressed(mouseX, mouseY);
+}
+
+void mouseReleased() {
+  fe_worldmap.processMouseReleased(mouseX, mouseY);
 }
 
 void keyPressed(){
@@ -128,7 +127,7 @@ void keyPressed(){
         float ny = oldy + random(100) - 50;
         springs[i].setPosition(nx, ny);
         springs[i].setTempPosition(oldx, oldy);
-        springs[i].setRadius(3 + random(200));
+        //springs[i].setRadius(3 + random(200));
       }
     }
   }
