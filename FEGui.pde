@@ -9,7 +9,8 @@ class FEGui implements Observer
   {
     checkBoxes = new ArrayList();
     for (int i = 0; i < tagOrder.length; i++){
-      CheckBox box = new CheckBox(1,1,10,10,getTagColor(tagOrder[i]),selectedTags.contains(tagOrder[i]));
+      CheckBox box = new CheckBox(1,1,10,10,getTagColor(tagOrder[i]),selectedTags.contains(tagOrder[i]), tagOrder[i]);
+      checkBoxes.add(box);
     }
     selectedDate = calendar.getTime();
     this.dayCollection = dayCollection;
@@ -90,5 +91,19 @@ class FEGui implements Observer
     text(dateView.currentDayString(), width - 140, height - 100);
     text(dateView.currentMonthString(), width - 155, height - 65);
     text(dateView.currentYearString(), width - 155, height - 25);
+    
+    //Filter CheckBoxes
+    textFont(font, 20);
+    text("Filter Tags", textX, height - 240);
+    int checkBoxX = textX;
+    int checkBoxY = height - 230;
+    for(int i = 0; i < checkBoxes.size(); i++){
+      CheckBox box = (CheckBox) checkBoxes.get(i);
+      box.x = checkBoxX;
+      box.y = checkBoxY;
+      checkBoxY += 15;
+      box.update();
+      box.display();
+    }
   }
 }

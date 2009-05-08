@@ -45,8 +45,9 @@ class CheckBox extends Button
   int selectedColor;
   boolean checked;
   float spaceFactor = 0.15;
+  String label;
   
-  CheckBox(int ix, int iy, int iw, int ih, int isc, boolean ic)
+  CheckBox(int ix, int iy, int iw, int ih, int isc, boolean ic, String il)
   {
     x = ix;
     y = iy;
@@ -54,6 +55,7 @@ class CheckBox extends Button
     h = ih;
     selectedColor = isc;
     checked = ic;
+    label = il;
   }
   
   void update()
@@ -62,6 +64,11 @@ class CheckBox extends Button
     pressed();
     if(!pressed && locked) {
       checked = !checked;
+      if (checked){
+        selectedTags.add(label);
+      } else {
+        selectedTags.remove(selectedTags.indexOf(label));
+      }
       release();
     }
   }
@@ -71,6 +78,9 @@ class CheckBox extends Button
     stroke(1);
     noFill();
     rect(x,y,w,h);
+    fill(1);
+    textFont(font, h);
+    text(label, x + w + 5, y+h);
     if (checked){
       noStroke();
       fill(selectedColor,0.5);

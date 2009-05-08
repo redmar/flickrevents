@@ -73,7 +73,7 @@ void setup() {
   
   frame.addComponentListener(new ComponentAdapter() {
     public void componentResized(ComponentEvent e) {
-       int minHeight = 600; int minWidth = 800; 
+       int minHeight = 768; int minWidth = 1024; 
        if(e.getSource()==frame) { 
          if (frame.getHeight() < minHeight) { frame.setSize(frame.getWidth(), minHeight); }
          if (frame.getWidth() < minWidth) { frame.setSize(frame.getHeight(), minWidth); }

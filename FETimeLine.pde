@@ -15,7 +15,7 @@ class FETimeLine implements Observer {
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     selectedDateWidth = 60;
     selectedDate = calendar.getTime();
-    locationX = 110;
+    locationX = 10;
   }
   
   void update(Observable obj, Object arg)
@@ -25,8 +25,8 @@ class FETimeLine implements Observer {
   }
       
   void step(){
-    locationY = height - 30;
-    stdBinWidth = (float) Math.floor((width - 400) / dayCollection.size()/2);
+    locationY = height - 40;
+    stdBinWidth = (float) Math.floor((width - 300) / dayCollection.size()/2);
   }
   
   void render(){
