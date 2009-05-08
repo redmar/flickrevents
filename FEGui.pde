@@ -4,6 +4,7 @@ class FEGui implements Observer
   FEDayCollection dayCollection;
   Date selectedDate;
   boolean update = false;
+  Button left, right;
   
   FEGui(FEDayCollection dayCollection)
   {

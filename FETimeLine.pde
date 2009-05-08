@@ -25,7 +25,7 @@ class FETimeLine implements Observer {
   }
       
   void step(){
-    locationY = height - 40;
+    locationY = height - ((stdBinWidth+4)*2);
     stdBinWidth = (float) Math.floor((width - 300) / dayCollection.size()/2);
   }
   
@@ -68,6 +68,9 @@ class FETimeLine implements Observer {
     df = new SimpleDateFormat("E");
     text(df.format(day.getDate()).charAt(0),startX + (binWidth/2 - 4), startY + stdBinWidth*2+6);
     for(int i = 0; i < tagOrder.length; i++){
+      if (!selectedTags.contains(tagOrder[i])){
+        continue;
+      }
       float h, nextH;
       
       //Render Rect
