@@ -30,6 +30,7 @@ class FETimeLine implements Observer {
   }
   
   void render(){
+    resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     float startX = locationX;
     for(int i = 0; i < dayCollection.size(); i++){
       FEDay day = (FEDay) dayCollection.get(i);
