@@ -1,0 +1,3 @@
+<photo id="3455273587" owner="37522246@N05" owner_name="sandman4justice" secret="a27dc87780" server="3600" farm="4" latitude="50.618225" longitude="5.942637" tags="music,guitar,jazz,aldimeola,gitarist,"/>
+<photo id="3455263705" owner="37522246@N05" owner_name="sandman4justice" secret="8a682712db" server="3585" farm="4" latitude="50.618225" longitude="5.942637" tags="music,guitar,jazz,extatic,aldimeola,gitarist,"/>
+<photo id="3455550318" owner="33935024@N07" owner_name="voitaco" secret="bef94fa14d" server="3659" farm="4" latitude="41.117447" longitude="25.409832" tags="music,colors,canon,lights,live,jazz,concerts,ef,saxophone,musicinstruments,saksofon,canonef28135mmf3556isusm,eos400d,"/>

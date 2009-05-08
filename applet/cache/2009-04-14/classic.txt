@@ -1,0 +1,1 @@
+<photo id="3440877184" owner="34106278@N04" owner_name="BKHagar" secret="2a876ed884" server="3338" farm="4" latitude="35.12695" longitude="-86.46249" tags="ranch,blue,music,history,classic,cars,car,emblem,rust,symbol,song,bruce,detroit,rusty,crest,cadillac,v,shield,cadillacranch,luxury,brucespringsteen,springsteen,wealth,status,fz50,panasoniclumix,kelsotn,bkhagar,"/>

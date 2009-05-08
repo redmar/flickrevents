@@ -1,0 +1,3 @@
+ -Xms64m -Xmx512m
+FlickrEvents
+api.jar,FlickrEvents.jar,core.jar,gifAnimation.jar,gifAnimation.jar
