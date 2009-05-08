@@ -8,7 +8,9 @@ class FEGui implements Observer
   FEGui(FEDayCollection dayCollection)
   {
     checkBoxes = new ArrayList();
-
+    for (int i = 0; i < tagOrder.length; i++){
+      CheckBox box = new CheckBox(1,1,10,10,getTagColor(tagOrder[i]),selectedTags.contains(tagOrder[i]));
+    }
     selectedDate = calendar.getTime();
     this.dayCollection = dayCollection;
   }

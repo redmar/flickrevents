@@ -46,14 +46,14 @@ class CheckBox extends Button
   boolean checked;
   float spaceFactor = 0.15;
   
-  CheckBox(int ix, int iy, int iw, int ih, int isc)
+  CheckBox(int ix, int iy, int iw, int ih, int isc, boolean ic)
   {
     x = ix;
     y = iy;
     w = iw;
     h = ih;
     selectedColor = isc;
-    checked = false;
+    checked = ic;
   }
   
   void update()

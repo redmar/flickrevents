@@ -56,14 +56,17 @@ class FETimeLine implements Observer {
     if (isSelected){
       noStroke();
       fill(1,1,1,0.1);
-      rect(startX, locationY - 200, selectedDateWidth, 200 + stdBinWidth+5);
+      rect(startX, locationY - 200, selectedDateWidth, 200 + stdBinWidth*2+8);
       binWidth = selectedDateWidth;
     } else {
       binWidth = stdBinWidth;
     }
     fill(1);
     textFont(font,stdBinWidth);
+    SimpleDateFormat df = new SimpleDateFormat("dd");
     text(df.format(day.getDate()),startX + (binWidth/2 - 1- (stdBinWidth/2)), startY + stdBinWidth+3);
+    df = new SimpleDateFormat("E");
+    text(df.format(day.getDate()).charAt(0),startX + (binWidth/2 - 4), startY + stdBinWidth*2+6);
     for(int i = 0; i < tagOrder.length; i++){
       float h, nextH;
       
