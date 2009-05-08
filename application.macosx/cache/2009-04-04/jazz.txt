@@ -1,1 +1,0 @@
-<photo id="3412108747" owner="64189496@N00" owner_name="topquark22" secret="2414d8de21" server="3578" farm="4" latitude="51.513245" longitude="-0.129604" tags="music,london,pub,soho,livemusic,cellphone,jazz,spiceoflife,file:name=2011081719,"/>
