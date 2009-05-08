@@ -9,7 +9,7 @@ class FEPhotoGroup {
   float calculated_radius_end;
   float calculated_radius_begin = 0;
   public FEWorldMap worldmap = null;
-  String tagname;
+  public String tagname;
   
   FEPhotoGroup() {
     this(0, 0, 1);

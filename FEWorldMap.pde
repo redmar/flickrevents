@@ -114,8 +114,11 @@ class FEWorldMap implements Observer {
       springs_synced = true;
     }
 
-    for (int i=0; i < springCount; i++) {
-      springs[i].display();
+    for(int i=0; i < springCount; i++) {
+      if( springs[i].getPhotogroup() != null && 
+          selectedTags.contains(springs[i].getPhotogroup().tagname) ) {
+          springs[i].display();
+      }
     }
   }
   
