@@ -30,11 +30,15 @@ class FESpring
   float accel = 0;    // Acceleration 
   float force = 0;    // Force 
   FEGraphic displayFunctor = null;
-
+  FESpring[] springphotos = null;
+  int springphotosCount = 0;
   FESpring[] friends;
   int me;
   
-  void setDisplayFunctor(FEGraphic aDisplayFunctor) { displayFunctor = aDisplayFunctor; }
+  void setDisplayFunctor(FEGraphic aDisplayFunctor) { 
+    displayFunctor = aDisplayFunctor; 
+    displayFunctor.setRadius(this.restsize);
+  }
   
   // Constructor
   FESpring(float x, float y, float s, float d, float m, 
@@ -63,7 +67,6 @@ class FESpring
     accel = force / mass;                 // Set the acceleration, f=ma == a=f/m 
     velsize = damp * (velsize + accel);         // Set the velocity 
     tempsize = tempsize + velsize;           // Updated position 
-    displayFunctor.setRadius(tempsize);
 
     force = -k * (tempypos - rest_posy);  // f=-ky 
     accel = force / mass;                 // Set the acceleration, f=ma == a=f/m 
@@ -93,7 +96,7 @@ class FESpring
 
   // Test to see if mouse is over this spring
   boolean over() {
-    if (dist(tempxpos, tempypos, mouseX, mouseY) < tempsize) {
+    if (displayFunctor.over()) {
       return true;
     } else {
       return false;
@@ -115,6 +118,7 @@ class FESpring
   void setRadius(float asize) {
     tempsize = this.restsize;
     this.restsize = asize;
+    if (displayFunctor != null) { displayFunctor.setRadius(asize); }
   }
   
   void display() 
@@ -126,18 +130,41 @@ class FESpring
     if (over) { 
       displayFunctor.setMouseOver(true);
       displayFunctor.display(tempxpos,tempypos);
+      displayFunctor.setRadius(tempsize);
     } else { 
       displayFunctor.setMouseOver(false);
-      displayFunctor.display(tempxpos,tempypos);
+      displayFunctor.display(tempxpos,tempypos);      
+      displayFunctor.setRadius(tempsize);
     }
     
-    if (showPhotos) {
-      stroke(1.0, 1.0, 1.0, 1.0);
-      fill(1.0, 1.0, 1.0, 1.0);
-      rect(tempxpos, tempypos, 30, 30);
+    if( showPhotos ) {
+//      if( photos == null ) initPhotos();
+//      else renderPhotos();
+
+//      stroke(1.0, 1.0, 1.0, 1.0);
+//      fill(1.0, 1.0, 1.0, 1.0);
+//      rect(tempxpos, tempypos, 30, 30);
       // for each photo 
     }
   } 
+
+  void initPhotos() {
+    // for all photos create bla bla
+    if( getPhotogroup() == null) return;
+    Vector FEFlickrPhotoVector = getPhotogroup().photos;
+    for(int i=0; i<FEFlickrPhotoVector.size(); i++) {
+      FEFlickrPhoto photodata = (FEFlickrPhoto)FEFlickrPhotoVector.get(i);
+//      FESpring photoSpring = new FESpring(xpos, ypos, 3.0, 0.80, 10, 0.9, photos.toArray(), 0);
+//      photoSpring.setDisplayfunctor = setDisplayFunctor(myDisplayFunctor);
+//      springphotos[springphotosCount] = photoSpring;
+//      springphotosCount++;
+    }
+  }
+  
+  void renderPhotos() {
+    if( getPhotogroup() == null) return;
+    // for all photos draw!
+  }
 
   void pressed() 
   { 
@@ -169,6 +196,8 @@ class FESpring
   }
   
   void setPhotogroup(FEPhotoGroup pg) {
+    springphotos = null;
+    springphotosCount = 0;
     showPhotos = false;
     associated_photogroup = pg;
   }

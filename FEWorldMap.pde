@@ -61,7 +61,7 @@ class FEWorldMap implements Observer {
     for (int i=0; i < springCount; i++) {
       if(springs[i].over()) {
         springs[i].pressed();
-        System.out.println(springs[i].getPhotogroup().photos);
+//        System.out.println(springs[i].getPhotogroup().photos);
       }
     }
   }
@@ -95,18 +95,17 @@ class FEWorldMap implements Observer {
         group.worldmap = this;
         if(i < springCount) {
           springs[i].moveTo(group.getX(), group.getY());
-//          springs[i].setPosition(group.getX(), group.getY());
           springs[i].setRadius(group.getRadius());
         }
         else {
           springs[i] = new FESpring(group.getX(), group.getY(), 3.0, 0.80, 10, 0.9, springs, 0);
           springs[i].setRadius(group.getRadius());
-          springCount++;
         }
         FECircleGraphic myDisplayFunctor = new FECircleGraphic(20);
         myDisplayFunctor.setTag(group.getTagname());
         springs[i].setDisplayFunctor(myDisplayFunctor);
         springs[i].setPhotogroup(group);
+        springCount++;
       }
       // remove unused springs
       for(int i=photoGroups.size(); i < springCount; i++) { springs[i] = null; }
@@ -157,6 +156,7 @@ class FEWorldMap implements Observer {
 class FECircleGraphic extends FEGraphic
 {
   float radius = 10.0;
+  float x, y;
   FETag mytag = null;
   
   FECircleGraphic(float aradius) { 
@@ -164,6 +164,7 @@ class FECircleGraphic extends FEGraphic
   }
   
   void display(float xpos, float ypos) {
+    this.x = xpos; this.y = ypos;
     noStroke();
     if (mouseover) {
       if (mytag != null) {
@@ -177,8 +178,9 @@ class FECircleGraphic extends FEGraphic
         stroke(getTagColor(mytag.getTagName()), 0.8);
       }
     }
-    ellipseMode(CENTER);
-    ellipse(xpos, ypos, radius, radius);      
+    ellipseMode(CENTER_DIAMETER);
+//    ellipseMode(CENTER);
+    ellipse(xpos, ypos, this.radius, this.radius);      
   }
   
   void setRadius(float asize) 
@@ -188,7 +190,21 @@ class FECircleGraphic extends FEGraphic
     this.radius = asize;
   }
   
+  float getRadius()
+  {
+    return this.radius;
+  }
+  
   void setTag(String atag) {
     mytag = new FETag(atag);
   }
+  
+  boolean over() {
+    if (dist(x, y, mouseX, mouseY) < (getRadius()/2)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
