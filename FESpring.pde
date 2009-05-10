@@ -125,8 +125,6 @@ class FESpring
   { 
     if (displayFunctor == null) return;
     
-    line(tempxpos, tempypos, xpos, ypos);
-    
     if (over) { 
       displayFunctor.setMouseOver(true);
       displayFunctor.display(tempxpos,tempypos);
@@ -138,14 +136,16 @@ class FESpring
     }
     
     if( showPhotos ) {
+      displayFunctor.displayPhotos();      
+    }
 //      if( photos == null ) initPhotos();
 //      else renderPhotos();
 
 //      stroke(1.0, 1.0, 1.0, 1.0);
 //      fill(1.0, 1.0, 1.0, 1.0);
 //      rect(tempxpos, tempypos, 30, 30);
-      // for each photo 
-    }
+// for each photo 
+//    }
   } 
 
   void initPhotos() {
@@ -178,12 +178,19 @@ class FESpring
   void released() 
   { 
     if (over) { 
-      if(associated_photogroup!=null) { showPhotos = !showPhotos; }
+      if(associated_photogroup!=null) { 
+         showPhotos = !showPhotos; 
+         if (displayFunctor != null) displayFunctor.releasePhotos();
+      }
     }
     move = false; 
     rest_posx = xpos;  
     rest_posy = ypos;
   } 
+  
+  void moveTo(position p) {
+    moveTo(p.x, p.y);
+  }
   
   void moveTo(float movetox, float movetoy) {
     float oldx = rest_posx; 
@@ -195,7 +202,7 @@ class FESpring
 //    springs[i].setRadius(3 + random(200));
   }
   
-  void setPhotogroup(FEPhotoGroup pg) {
+  void setPhotoGroup(FEPhotoGroup pg) {
     springphotos = null;
     springphotosCount = 0;
     showPhotos = false;
@@ -203,6 +210,10 @@ class FESpring
   }
   FEPhotoGroup getPhotogroup() {
     return associated_photogroup;
+  }
+  
+  position position() {
+    return new position(rest_posx, rest_posy);
   }
 } 
 

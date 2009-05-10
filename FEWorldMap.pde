@@ -21,6 +21,9 @@ class FEWorldMap implements Observer {
     xpos = 10;//(width/2)-(img_width/2);
     ypos = 50;//(height/2)-(img_height/2);
     photoGroups = new Vector();
+    selectedDate = calendar.getTime();
+    currentDay = dayCollection.getDay(selectedDate);
+    loadDay();
   }
 
   // walk each photogroup if we're inside a given radius add it to that group
@@ -44,6 +47,7 @@ class FEWorldMap implements Observer {
   }
   
   void loadDay() {
+    if(currentDay == null) return;
     photoGroups = new Vector();
     int groupidx = 0;
     
@@ -61,7 +65,7 @@ class FEWorldMap implements Observer {
     for (int i=0; i < springCount; i++) {
       if(springs[i].over()) {
         springs[i].pressed();
-//        System.out.println(springs[i].getPhotogroup().photos);
+        System.out.println(springs[i].getPhotogroup().photos);
       }
     }
   }
@@ -87,29 +91,30 @@ class FEWorldMap implements Observer {
   }
   
   void render() {
+    imageMode(CORNERS);
     image(img, xpos, ypos, img_width, img_height);
     
     if( springs_synced == false ) {
       for (int i=0; i < photoGroups.size(); i++) {
         FEPhotoGroup group = ((FEPhotoGroup)photoGroups.get(i));
         group.worldmap = this;
-        if(i < springCount) {
-          springs[i].moveTo(group.getX(), group.getY());
-          springs[i].setRadius(group.getRadius());
+        if(springs[i] != null && i < springCount) {
         }
         else {
-          springs[i] = new FESpring(group.getX(), group.getY(), 3.0, 0.80, 10, 0.9, springs, 0);
-          springs[i].setRadius(group.getRadius());
+          springs[i] = new FESpring(0.0, 0.0, 1.0, 0.80, 10, 0.9, springs, 0);
+          springCount++;
         }
-        FECircleGraphic myDisplayFunctor = new FECircleGraphic(20);
+        FECircleGraphic myDisplayFunctor = new FECircleGraphic(1.0);
         myDisplayFunctor.setTag(group.getTagname());
+        myDisplayFunctor.setPhotoGroup(group);
         springs[i].setDisplayFunctor(myDisplayFunctor);
-        springs[i].setPhotogroup(group);
-        springCount++;
+        springs[i].setPhotoGroup(group);
+        springs[i].setRadius(group.getRadius());
+        springs[i].moveTo(group.getX(), group.getY());
       }
       // remove unused springs
       for(int i=photoGroups.size(); i < springCount; i++) { springs[i] = null; }
-      springCount = photoGroups.size();
+      springCount = photoGroups.size()-1;
       springs_synced = true;
     }
 
@@ -158,6 +163,8 @@ class FECircleGraphic extends FEGraphic
   float radius = 10.0;
   float x, y;
   FETag mytag = null;
+  FEPhotoGroup photoGroup = null;
+  Vector photos = null;
   
   FECircleGraphic(float aradius) { 
     this.radius = aradius; 
@@ -170,6 +177,7 @@ class FECircleGraphic extends FEGraphic
       if (mytag != null) {
         fill(getTagColor(mytag.getTagName()),0.5);
         stroke(getTagColor(mytag.getTagName()), 0.5);
+//        line(tempxpos, tempypos, xpos, ypos);
       }
     }
     else {
@@ -181,6 +189,40 @@ class FECircleGraphic extends FEGraphic
     ellipseMode(CENTER_DIAMETER);
 //    ellipseMode(CENTER);
     ellipse(xpos, ypos, this.radius, this.radius);      
+  }
+  
+  void releasePhotos() { if(photos != null) photos = null; }
+      
+  void displayPhotos() {
+    if(photos == null) initPhotos();
+    
+    for(int i=0; i< photos.size(); i++) {
+      for(int j=0; j< photos.size(); j++) {
+        if(j!=i)
+        {
+          vector f=getSpringForce(((FESpring)photos.get(i)).position(), ((FESpring)photos.get(j)).position(), 200, .5);
+//          System.out.println(i + "," + j + " displace: " + ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m) );
+          position newpos = ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m);
+          ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);
+        }
+      }
+    }
+    for(int i=0; i< photos.size(); i++) {
+      ((FESpring)photos.get(i)).update();
+      ((FESpring)photos.get(i)).display();
+    }
+  }
+  
+  void initPhotos() {
+    photos = new Vector(photoGroup.getPhotoCount());
+    for(int i=0; i<photoGroup.getPhotoCount(); i++) {
+      FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i);
+      FESpring newSpring = new FESpring(x+random(50)-25, y+random(50)-25, 1.0, 0.80, 10, 0.9, null, 0);
+      FEPhotoGraphic pgraphic = new FEPhotoGraphic(p);
+      newSpring.setDisplayFunctor(pgraphic);
+      photos.add((Object)newSpring);
+    }
+    
   }
   
   void setRadius(float asize) 
@@ -195,6 +237,10 @@ class FECircleGraphic extends FEGraphic
     return this.radius;
   }
   
+  void setPhotoGroup(FEPhotoGroup group) {
+    photoGroup = group;
+  }
+  
   void setTag(String atag) {
     mytag = new FETag(atag);
   }
@@ -207,4 +253,63 @@ class FECircleGraphic extends FEGraphic
     }
   }
 
+}
+
+class FEPhotoGraphic extends FEGraphic {
+  PImage original_img;
+  FEFlickrPhoto flickrPhoto = null;
+  String farm_id, server_id, id, secret;
+  String flickr_url = "";
+  
+  FEPhotoGraphic(FEFlickrPhoto p) {
+    flickrPhoto = p;
+    setFlickrURL(flickrPhoto.getFlickrURL("t"));
+  }
+  
+  boolean mouseover;
+  void display(float xpos, float ypos) { 
+    if( original_img != null ) {
+      switch(original_img.width) {
+        case 0: 
+          // still loading 
+          drawBusy(xpos,ypos);
+          break;
+        case -1: return; // show nothing when in error!
+        default: 
+          // loaded successfully
+          imageMode(CENTER);
+          image(original_img, xpos, ypos);
+      }
+    }
+    else {
+      drawBusy(xpos,ypos);
+    }
+  }
+  
+  void drawBusy(float xpos, float ypos) {
+    fill(1.0, 1.0, 1.0, 0.5);
+    noStroke();
+    ellipseMode(CENTER_DIAMETER);
+    ellipse(xpos, ypos, 5.0, 5.0);      
+  }
+  
+  void setMouseOver(boolean mouse_is_over_me) { this.mouseover = mouse_is_over_me; };
+  void setRadius(float asize) {  };
+  void displayPhotos() { };
+  boolean over() { 
+    return false;
+  }
+  
+  void setFlickrURL(String url) { 
+    this.flickr_url = url;
+    this.original_img = requestImage(this.flickr_url);
+  }
+
+  void setFlickrURL(String farm_id, String server_id, String id, String secret) {
+    setFlickrURL(createFlickrURL(farm_id, server_id, id, secret));    
+  } 
+  
+  String createFlickrURL(String farm_id, String server_id, String id, String secret) { //_[mstb].jpg
+    return "http://farm" + farm_id + ".static.flickr.com/" + server_id + "/" + id + "_" + secret + "_t.jpg";
+  }
 }

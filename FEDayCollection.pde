@@ -237,4 +237,9 @@ class FEFlickrPhoto
   public String getFlickrURL() {
     return "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret + ".jpg";
   }
+  public String getFlickrURL(String mstb) {
+    if(mstb == null) return getFlickrURL();
+    return "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret + "_"+mstb+".jpg";
+  }
+
 }

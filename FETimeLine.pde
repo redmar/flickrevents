@@ -86,7 +86,7 @@ class FETimeLine implements Observer {
       rect(startX, startY - h, binWidth, h);
       
       //Render quad
-      tag.setColor(0.4);
+      tag.setColor(0.35);
       if (nextDay != null){
         FETag nextTag = nextDay.getTag(tagOrder[i]);
         nextH = (float) nextTag.size() * resizeFactor;
