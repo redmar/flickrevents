@@ -65,7 +65,7 @@ class FEWorldMap implements Observer {
     for (int i=0; i < springCount; i++) {
       if(springs[i].over()) {
         springs[i].pressed();
-        System.out.println(springs[i].getPhotogroup().photos);
+//        System.out.println(springs[i].getPhotogroup().photos);
       }
     }
   }
@@ -91,7 +91,7 @@ class FEWorldMap implements Observer {
   }
   
   void render() {
-    imageMode(CORNERS);
+    imageMode(CORNER);
     image(img, xpos, ypos, img_width, img_height);
     
     if( springs_synced == false ) {
@@ -165,6 +165,8 @@ class FECircleGraphic extends FEGraphic
   FETag mytag = null;
   FEPhotoGroup photoGroup = null;
   Vector photos = null;
+  boolean releasephotos = false;
+  boolean showphotos = false;
   
   FECircleGraphic(float aradius) { 
     this.radius = aradius; 
@@ -189,13 +191,41 @@ class FECircleGraphic extends FEGraphic
     ellipseMode(CENTER_DIAMETER);
 //    ellipseMode(CENTER);
     ellipse(xpos, ypos, this.radius, this.radius);      
+    if( showphotos ) { displayPhotos(); }
   }
   
-  void releasePhotos() { if(photos != null) photos = null; }
+  void releasePhotos() { 
+    if( photos == null ) return;
+    releasephotos = true;
+    for(int i=0; i< photos.size(); i++) {
+      ((FESpring)photos.get(i)).moveTo(x,y);
+      ((FESpring)photos.get(i)).setRadius(1.0);
+    }
+  }
+  
+  void setShowPhotos(boolean yesorno) {
+    if(yesorno == true) {
+      showphotos = true;
+    }
+    else {
+      releasePhotos();
+    }
+  }
       
   void displayPhotos() {
     if(photos == null) initPhotos();
-    
+    if( releasephotos ) {
+      boolean all_at_rest = true;
+      for(int i=0; i< photos.size(); i++) {
+        FESpring currentSpring = ((FESpring)photos.get(i));
+        currentSpring.update();
+        currentSpring.display();
+        if( !currentSpring.atRest() ) all_at_rest = false;
+      }
+      if( all_at_rest ) { photos = null; showphotos = false; } 
+      return;
+    }    
+
     for(int i=0; i< photos.size(); i++) {
       for(int j=0; j< photos.size(); j++) {
         if(j!=i)
@@ -204,6 +234,12 @@ class FECircleGraphic extends FEGraphic
 //          System.out.println(i + "," + j + " displace: " + ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m) );
           position newpos = ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m);
           ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);
+        }
+        else {
+          vector f=getSpringForce(((FESpring)photos.get(i)).position(), new position(x,y), getRadius()+50, .9);
+//          System.out.println(i + "," + j + " displace: " + ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m) );
+          position newpos = ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m);
+          ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);        
         }
       }
     }
@@ -214,11 +250,12 @@ class FECircleGraphic extends FEGraphic
   }
   
   void initPhotos() {
+    releasephotos = false;
     photos = new Vector(photoGroup.getPhotoCount());
     for(int i=0; i<photoGroup.getPhotoCount(); i++) {
       FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i);
       FESpring newSpring = new FESpring(x+random(50)-25, y+random(50)-25, 1.0, 0.80, 10, 0.9, null, 0);
-      FEPhotoGraphic pgraphic = new FEPhotoGraphic(p);
+      FEPhotoGraphic pgraphic = new FEPhotoGraphic(p,newSpring);
       newSpring.setDisplayFunctor(pgraphic);
       photos.add((Object)newSpring);
     }
@@ -260,9 +297,12 @@ class FEPhotoGraphic extends FEGraphic {
   FEFlickrPhoto flickrPhoto = null;
   String farm_id, server_id, id, secret;
   String flickr_url = "";
+  float iw = -1; float ih = -1;
+  FESpring myspring = null;
   
-  FEPhotoGraphic(FEFlickrPhoto p) {
+  FEPhotoGraphic(FEFlickrPhoto p, FESpring myspring) {
     flickrPhoto = p;
+    this.myspring = myspring;
     setFlickrURL(flickrPhoto.getFlickrURL("t"));
   }
   
@@ -278,7 +318,8 @@ class FEPhotoGraphic extends FEGraphic {
         default: 
           // loaded successfully
           imageMode(CENTER);
-          image(original_img, xpos, ypos);
+          image(original_img, xpos, ypos, iw, ih);
+          if( iw == -1 ) { iw = original_img.width; ih = original_img.height; myspring.setRadius(iw); } 
       }
     }
     else {
@@ -294,7 +335,24 @@ class FEPhotoGraphic extends FEGraphic {
   }
   
   void setMouseOver(boolean mouse_is_over_me) { this.mouseover = mouse_is_over_me; };
-  void setRadius(float asize) {  };
+  
+  void setRadius(float asize) { 
+//    asize = -1;
+    if( original_img != null && original_img.width > 1) {
+      if(asize == -1 ) {  // reset at -1
+        iw = original_img.width; ih = original_img.height;
+      } else {
+
+        iw = asize; 
+        ih = original_img.height * iw / original_img.width;
+
+//        float ratio = original_img.height / original_img.width;
+//        iw = asize;
+//        ih = iw * ratio;
+      }
+    }
+  }
+  
   void displayPhotos() { };
   boolean over() { 
     return false;

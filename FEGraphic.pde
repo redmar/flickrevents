@@ -8,4 +8,5 @@ class FEGraphic {
   boolean over() { 
     return false;
   }
+  void setShowPhotos(boolean yesorno) { };
 }

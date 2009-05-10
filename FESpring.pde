@@ -135,9 +135,10 @@ class FESpring
       displayFunctor.setRadius(tempsize);
     }
     
-    if( showPhotos ) {
-      displayFunctor.displayPhotos();      
-    }
+//    if( showPhotos ) {
+//      displayFunctor.displayPhotos();      
+//    }
+
 //      if( photos == null ) initPhotos();
 //      else renderPhotos();
 
@@ -180,7 +181,7 @@ class FESpring
     if (over) { 
       if(associated_photogroup!=null) { 
          showPhotos = !showPhotos; 
-         if (displayFunctor != null) displayFunctor.releasePhotos();
+         if (displayFunctor != null) displayFunctor.setShowPhotos(showPhotos);
       }
     }
     move = false; 
@@ -214,6 +215,10 @@ class FESpring
   
   position position() {
     return new position(rest_posx, rest_posy);
+  }
+  
+  boolean atRest() {
+    return velx < 0.01 && vely < 0.01;
   }
 } 
 
