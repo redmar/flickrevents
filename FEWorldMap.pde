@@ -236,10 +236,13 @@ class FECircleGraphic extends FEGraphic
           ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);
         }
         else {
+//          boolean overphoto = ((FESpring)photos.get(i)).over();
           vector f=getSpringForce(((FESpring)photos.get(i)).position(), new position(x,y), getRadius()+50, .9);
 //          System.out.println(i + "," + j + " displace: " + ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m) );
           position newpos = ((FESpring)photos.get(i)).position().displace(f.a,0.15*f.m);
-          ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);        
+          ((FESpring)photos.get(i)).setPosition(newpos.x, newpos.y);  
+//          if( overphoto ) 
+//            ((FESpring)photos.get(i)).setRadius(getRadius()*10);
         }
       }
     }
@@ -293,11 +296,12 @@ class FECircleGraphic extends FEGraphic
 }
 
 class FEPhotoGraphic extends FEGraphic {
-  PImage original_img;
+  public PImage original_img;
   FEFlickrPhoto flickrPhoto = null;
   String farm_id, server_id, id, secret;
   String flickr_url = "";
   float iw = -1; float ih = -1;
+  float xpos, ypos;
   FESpring myspring = null;
   
   FEPhotoGraphic(FEFlickrPhoto p, FESpring myspring) {
@@ -307,7 +311,8 @@ class FEPhotoGraphic extends FEGraphic {
   }
   
   boolean mouseover;
-  void display(float xpos, float ypos) { 
+  void display(float xpos, float ypos) {
+    this.xpos = xpos; this.ypos = ypos;
     if( original_img != null ) {
       switch(original_img.width) {
         case 0: 
@@ -317,9 +322,28 @@ class FEPhotoGraphic extends FEGraphic {
         case -1: return; // show nothing when in error!
         default: 
           // loaded successfully
+          if( over() ) { 
+            noFill(); 
+            stroke(1.0, 1.0, 1.0, 0.8); 
+            strokeWeight(12.0);
+            strokeJoin(ROUND);
+            rect(xpos-(iw/2)-3, ypos-(ih/2)-3, iw+6, ih+6); 
+            strokeJoin(MITER);
+            strokeWeight(1.0);
+          }
           imageMode(CENTER);
           image(original_img, xpos, ypos, iw, ih);
           if( iw == -1 ) { iw = original_img.width; ih = original_img.height; myspring.setRadius(iw); } 
+          if( over() ) { 
+            selectedPhoto = flickrPhoto; 
+            tagsForSelectedPhoto = flickrPhoto.getTags();
+          } 
+          else if( (selectedPhoto == flickrPhoto) && !over() ) { 
+            selectedPhoto = null; 
+            tagsForSelectedPhoto = null;
+          }
+
+//          else { myspring.setRadius(original_img.width); }
       }
     }
     else {
@@ -345,6 +369,7 @@ class FEPhotoGraphic extends FEGraphic {
 
         iw = asize; 
         ih = original_img.height * iw / original_img.width;
+//        myspring.restsize = iw;
 
 //        float ratio = original_img.height / original_img.width;
 //        iw = asize;
@@ -355,7 +380,15 @@ class FEPhotoGraphic extends FEGraphic {
   
   void displayPhotos() { };
   boolean over() { 
-    return false;
+    if( (mouseX > (xpos - (iw/2))) && 
+        (mouseX < (xpos + (iw/2))) &&
+        (mouseY > (ypos - (ih/2))) &&
+        (mouseY < (ypos + (ih/2))) ) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
   
   void setFlickrURL(String url) { 

@@ -7,7 +7,7 @@ class FESpring
 
   float size = 20; 
   float tempsize = 20;
-  float restsize = 20;
+  public float restsize = 20;
   float velsize = 0.0;
   
   FEPhotoGroup associated_photogroup = null;

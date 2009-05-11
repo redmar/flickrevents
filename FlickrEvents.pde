@@ -6,6 +6,8 @@ String[] tagOrder = {"rock","classic","trance","pop","jazz"};
 ArrayList selectedTags = new ArrayList(Arrays.asList(tagOrder));
 String[] unwantedTags = {"rock","classic","trance","pop","jazz","music"};
 ArrayList tagFilter = new ArrayList(Arrays.asList(unwantedTags));
+ArrayList tagsForSelectedPhoto = new ArrayList();
+FEFlickrPhoto selectedPhoto = null;
 //////////////////////////////////////
 
 FETimeLine fe_timeline;  

@@ -68,9 +68,13 @@ class FEGui implements Observer
     textY += 20;
     textFont(font, 12);
     for(int i = 0; i < topUsers.size() && i < 10; i++){
+      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1.0,0,0); }
+
       text((i+1) + ".", textX, textY);
       text((String)topUsers.get(i), textX + 25, textY);
       textY += 15;
+
+      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1); }
     }
     
     //Tags
@@ -81,9 +85,13 @@ class FEGui implements Observer
     textY += 20;
     textFont(font, 12);
     for(int i = 0; i < topTags.size() && i < 10; i++){
+      if( selectedPhoto != null && tagsForSelectedPhoto != null && tagsForSelectedPhoto.contains((String)topTags.get(i)) ) { fill(1.0,0,0); }
+      
       text((i+1) + ".", textX, textY);
       text((String)topTags.get(i), textX + 25, textY);
       textY += 15;
+
+      if( selectedPhoto != null && tagsForSelectedPhoto != null && tagsForSelectedPhoto.contains((String)topTags.get(i)) ) { fill(1); }
     }
     
     //Date
