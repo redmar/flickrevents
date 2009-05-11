@@ -317,7 +317,7 @@ class FEPhotoGraphic extends FEGraphic {
       switch(original_img.width) {
         case 0: 
           // still loading 
-          drawBusy(xpos,ypos);
+          drawBusy(xpos+random(6)-6,ypos+random(6)-6);
           break;
         case -1: return; // show nothing when in error!
         default: 
@@ -347,7 +347,7 @@ class FEPhotoGraphic extends FEGraphic {
       }
     }
     else {
-      drawBusy(xpos,ypos);
+      drawBusy(xpos+random(6)-6,ypos+random(6)-6);
     }
   }
   
