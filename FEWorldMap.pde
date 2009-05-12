@@ -66,6 +66,8 @@ class FEWorldMap implements Observer {
       if(springs[i].over()) {
         springs[i].pressed();
 //        System.out.println(springs[i].getPhotogroup().photos);
+      } else {
+        springs[i].hardRelease();
       }
     }
   }
@@ -167,6 +169,7 @@ class FECircleGraphic extends FEGraphic
   Vector photos = null;
   boolean releasephotos = false;
   boolean showphotos = false;
+  public float tempxpos, tempypos;
   
   FECircleGraphic(float aradius) { 
     this.radius = aradius; 
@@ -179,7 +182,7 @@ class FECircleGraphic extends FEGraphic
       if (mytag != null) {
         fill(getTagColor(mytag.getTagName()),0.5);
         stroke(getTagColor(mytag.getTagName()), 0.5);
-//        line(tempxpos, tempypos, xpos, ypos);
+        line(tempxpos, tempypos, xpos, ypos);
       }
     }
     else {
@@ -197,7 +200,7 @@ class FECircleGraphic extends FEGraphic
   void releasePhotos() { 
     if( photos == null ) return;
     releasephotos = true;
-    for(int i=0; i< photos.size(); i++) {
+    for(int i=0; i< max_photos(); i++) {
       ((FESpring)photos.get(i)).moveTo(x,y);
       ((FESpring)photos.get(i)).setRadius(1.0);
     }
@@ -216,7 +219,7 @@ class FECircleGraphic extends FEGraphic
     if(photos == null) initPhotos();
     if( releasephotos ) {
       boolean all_at_rest = true;
-      for(int i=0; i< photos.size(); i++) {
+      for(int i=0; i< max_photos(); i++) {
         FESpring currentSpring = ((FESpring)photos.get(i));
         currentSpring.update();
         currentSpring.display();
@@ -226,8 +229,8 @@ class FECircleGraphic extends FEGraphic
       return;
     }    
 
-    for(int i=0; i< photos.size(); i++) {
-      for(int j=0; j< photos.size(); j++) {
+    for(int i=0; i< max_photos(); i++) {
+      for(int j=0; j< max_photos(); j++) {
         if(j!=i)
         {
           vector f=getSpringForce(((FESpring)photos.get(i)).position(), ((FESpring)photos.get(j)).position(), 200, .5);
@@ -246,16 +249,22 @@ class FECircleGraphic extends FEGraphic
         }
       }
     }
-    for(int i=0; i< photos.size(); i++) {
+    for(int i=0; i< max_photos(); i++) {
       ((FESpring)photos.get(i)).update();
       ((FESpring)photos.get(i)).display();
     }
   }
   
+  int max_photos() {
+    // should be photos.size() if you want to see ALL photos!
+    return min(12,photoGroup.getPhotoCount());
+  }
+  
   void initPhotos() {
     releasephotos = false;
-    photos = new Vector(photoGroup.getPhotoCount());
-    for(int i=0; i<photoGroup.getPhotoCount(); i++) {
+//    photos = new Vector(photoGroup.getPhotoCount());
+    photos = new Vector(max_photos());
+    for(int i=0; i<max_photos(); i++) {
       FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i);
       FESpring newSpring = new FESpring(x+random(50)-25, y+random(50)-25, 1.0, 0.80, 10, 0.9, null, 0);
       FEPhotoGraphic pgraphic = new FEPhotoGraphic(p,newSpring);

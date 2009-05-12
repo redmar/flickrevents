@@ -13,7 +13,7 @@ class FESpring
   FEPhotoGroup associated_photogroup = null;
   boolean showPhotos = false;
   
-  boolean over = false; 
+  public boolean over = false; 
   boolean move = false; 
  
   // Spring simulation constants 
@@ -175,6 +175,11 @@ class FESpring
       move = false; 
     }  
   } 
+
+  void hardRelease() {
+    showPhotos = false;
+    if (displayFunctor != null) displayFunctor.setShowPhotos(false);
+  }
 
   void released() 
   { 
