@@ -1,6 +1,7 @@
 import java.lang.*;
 class FETimeLine implements Observer {
   FEDayCollection dayCollection;
+  ArrayList timeLineButtons;
   float resizeFactor;
   float locationX, locationY, stdBinWidth;
   Date selectedDate;
@@ -15,7 +16,13 @@ class FETimeLine implements Observer {
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     selectedDateWidth = 60;
     selectedDate = calendar.getTime();
-    locationX = 10;
+    locationX = 30;
+    timeLineButtons = new ArrayList();
+    for(int i = 0; i < dayCollection.size(); i++){
+      FEDay day = (FEDay)dayCollection.get(i);
+      TimeLineDay timeLineDay = new TimeLineDay(day.getDate());
+      timeLineButtons.add(timeLineDay);
+    }
   }
   
   void update(Observable obj, Object arg)
@@ -32,6 +39,7 @@ class FETimeLine implements Observer {
   void render(){
     resizeFactor = 200 / (float) dayCollection.getMaxPhotos();
     float startX = locationX;
+    renderAxis();
     for(int i = 0; i < dayCollection.size(); i++){
       FEDay day = (FEDay) dayCollection.get(i);
       FEDay nextDay;
@@ -52,8 +60,24 @@ class FETimeLine implements Observer {
     }
   }
   
+  void renderAxis()
+  {
+    stroke(0.1);
+    line(locationX, locationY, locationX, locationY - 200);
+    line(locationX + 60 + 60*stdBinWidth, locationY, locationX + 60 + 60*stdBinWidth, locationY - 200);
+    textFont(font, 8);
+    fill(1);
+    int labelStep = dayCollection.getMaxPhotos() / 20;
+    int maxPhotos = dayCollection.getMaxPhotos();
+    for(int i = 0; i < 20; i++){
+      line(locationX - 25, locationY - 200 + i*10, locationX + 60 + 60*stdBinWidth, locationY - 200 + i*10);
+      text(maxPhotos - labelStep * (i),locationX - 25, locationY + 4 - 200 + i*10);
+    }
+  }
+  
   void renderDay(float startX, FEDay day, FEDay nextDay, boolean isSelected){
     float startY = locationY, nextY = locationY, binWidth;
+    
     if (isSelected){
       noStroke();
       fill(1,1,1,0.1);
@@ -61,7 +85,10 @@ class FETimeLine implements Observer {
       binWidth = selectedDateWidth;
     } else {
       binWidth = stdBinWidth;
+      TimeLineDay timeLineDay = (TimeLineDay)timeLineButtons.get(dayCollection.indexOf(day));
+      timeLineDay.update(startX, locationY - 200, stdBinWidth, 200 + stdBinWidth*2+8);
     }
+    
     fill(1);
     textFont(font,stdBinWidth);
     SimpleDateFormat df = new SimpleDateFormat("dd");

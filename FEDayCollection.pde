@@ -157,7 +157,7 @@ class FETag extends ArrayList
           count = (Integer) unsorted.get(photo.getOwnerName());
         }
         count++;
-        unsorted.put(photo.getOwnerName(),count); 
+        unsorted.put(photo.getOwner()+":"+photo.getOwnerName(),count); 
       }
       sortedUsers = sortHashMapByValuesD(unsorted, true);
     }

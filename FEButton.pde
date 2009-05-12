@@ -50,6 +50,48 @@ class Button
   }
 }
 
+class Link extends Button
+{
+  Link()
+  {
+  }
+  
+  void update(float ix, float iy, float iw, float ih, String link){
+    x = (int)ix;
+    y = (int)iy;
+    w = (int)iw;
+    h = (int)ih;
+    over();
+    pressed();
+    if(!pressed && locked) {
+      link(link);
+      release();
+    }
+  }
+}
+
+class TimeLineDay extends Button
+{
+  Date day;
+  
+  TimeLineDay(Date id){
+    day = id;
+  }
+  
+  void update(float ix, float iy, float iw, float ih){
+    x = (int)ix;
+    y = (int)iy;
+    w = (int)iw;
+    h = (int)ih;
+    over();
+    pressed();
+    if(!pressed && locked) {
+      dateView.setCurrentDate(day);
+      release();
+    }
+  }
+}
+
 class CheckBox extends Button
 {
   int selectedColor;

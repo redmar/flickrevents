@@ -71,7 +71,9 @@ class FEGui implements Observer
       if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1.0,0,0); }
 
       text((i+1) + ".", textX, textY);
-      text((String)topUsers.get(i), textX + 25, textY);
+      String ownerName = ((String)topUsers.get(i)).split(":")[1];
+      String owner = ((String)topUsers.get(i)).split(":")[0];
+      text(ownerName, textX + 25, textY);
       textY += 15;
 
       if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1); }

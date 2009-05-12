@@ -54,6 +54,12 @@ class FEDateView extends Observable {
   String currentFullDateString() {
     return currentDayString() + " " + currentMonthString() + " " + currentYearString();
   }
+  
+  void setCurrentDate(Date date){
+    calendar.setTime(date);
+    setChanged();
+    notifyObservers();
+  }
 
   void gotoPrevDay() { gotoDay(-1); }
   void gotoNextDay() { gotoDay(1);  }

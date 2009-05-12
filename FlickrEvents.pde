@@ -21,7 +21,7 @@ String cacheDir;
 boolean w_event = true;
 boolean debug = false;
 PFont font = createFont("FuturaLT", 32);
-GregorianCalendar calendar = new GregorianCalendar(2009, 3, 27);
+GregorianCalendar calendar = new GregorianCalendar(2009, 2, 30);
 
 void setup() {
   smooth();
@@ -54,6 +54,7 @@ void setup() {
     FEDayCollection dayCollection = cacheReader.getDayCollection();
     fe_worldmap = new FEWorldMap(dayCollection);
     dateView = new FEDateView(this);
+    dateView.setCurrentDate(calendar.getTime());
     dateView.addObserver(fe_worldmap);
     fe_timeline = new FETimeLine(dayCollection);
     dateView.addObserver(fe_timeline);
