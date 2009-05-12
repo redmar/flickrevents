@@ -1,16 +1,20 @@
 class FEGui implements Observer
 {
-  ArrayList checkBoxes;
+  ArrayList checkBoxes = new ArrayList();
+  ArrayList userLinks = new ArrayList();
   FEDayCollection dayCollection;
   Date selectedDate;
   boolean update = false;
   
   FEGui(FEDayCollection dayCollection)
   {
-    checkBoxes = new ArrayList();
     for (int i = 0; i < tagOrder.length; i++){
       CheckBox box = new CheckBox(1,1,10,10,getTagColor(tagOrder[i]),selectedTags.contains(tagOrder[i]), tagOrder[i]);
       checkBoxes.add(box);
+    }
+    for (int i = 0; i < 10; i++){
+      Link link = new Link();
+      userLinks.add(link);
     }
     selectedDate = calendar.getTime();
     this.dayCollection = dayCollection;
@@ -59,7 +63,7 @@ class FEGui implements Observer
     textY += 15;
     text("Number of tags:", textX, textY);
     text(topTags.size(), textX + 120, textY);
-    textY += 35;    
+    textY += 35;
     
     //Users
     textFont(font, 20);
@@ -74,6 +78,8 @@ class FEGui implements Observer
       String ownerName = ((String)topUsers.get(i)).split(":")[1];
       String owner = ((String)topUsers.get(i)).split(":")[0];
       text(ownerName, textX + 25, textY);
+      Link link = (Link) userLinks.get(i);
+      link.update(textX + 25, textY -15, 200, 15, "http://www.flickr.com/photos/"+owner);
       textY += 15;
 
       if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1); }

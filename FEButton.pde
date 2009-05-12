@@ -64,9 +64,12 @@ class Link extends Button
     over();
     pressed();
     if(!pressed && locked) {
+      System.out.println(link);
       link(link);
       release();
     }
+    stroke(1);
+    noFill();
   }
 }
 
