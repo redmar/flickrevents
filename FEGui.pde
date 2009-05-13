@@ -5,9 +5,12 @@ class FEGui implements Observer
   FEDayCollection dayCollection;
   Date selectedDate;
   boolean update = false;
+  PImage logo;
   
   FEGui(FEDayCollection dayCollection)
   {
+    logo = loadImage("logo.png"); 
+    
     for (int i = 0; i < tagOrder.length; i++){
       CheckBox box = new CheckBox(1,1,10,10,getTagColor(tagOrder[i]),selectedTags.contains(tagOrder[i]), tagOrder[i]);
       checkBoxes.add(box);
@@ -45,8 +48,10 @@ class FEGui implements Observer
     //Text sections
     //Title
     fill(1);
-    textFont(font, 50);
-    text("GLOBAL PARTY VIEWER", 10, 50);
+//    textFont(font, 50);
+//    text("GLOBAL PARTY VIEWER", 10, 50);
+    imageMode(CORNER);
+    image(logo, 0, 0);
     
     //Details
     int textY = 40;

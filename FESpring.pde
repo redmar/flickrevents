@@ -9,6 +9,7 @@ class FESpring
   float tempsize = 20;
   public float restsize = 20;
   float velsize = 0.0;
+  int clickTime = 0;
   
   FEPhotoGroup associated_photogroup = null;
   boolean showPhotos = false;
@@ -124,6 +125,8 @@ class FESpring
   void display() 
   { 
     if (displayFunctor == null) return;
+    displayFunctor.originx = xpos;
+    displayFunctor.originy = ypos;
     
     if (over) { 
       displayFunctor.setMouseOver(true);
@@ -169,11 +172,13 @@ class FESpring
 
   void pressed() 
   { 
+    clickTime = millis();
     if (over) { 
       move = true; 
     } else { 
       move = false; 
     }  
+    if(displayFunctor != null) displayFunctor.setMouseDown(true);
   } 
 
   void hardRelease() {
@@ -183,7 +188,9 @@ class FESpring
 
   void released() 
   { 
-    if (over) { 
+    int deltaClick = millis() - clickTime;
+
+    if (over && deltaClick < 200) { 
       if(associated_photogroup!=null) { 
          showPhotos = !showPhotos; 
          if (displayFunctor != null) displayFunctor.setShowPhotos(showPhotos);
@@ -192,6 +199,7 @@ class FESpring
     move = false; 
     rest_posx = xpos;  
     rest_posy = ypos;
+    if(displayFunctor != null) displayFunctor.setMouseDown(false);
   } 
   
   void moveTo(position p) {

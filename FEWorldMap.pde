@@ -65,17 +65,16 @@ class FEWorldMap implements Observer {
     for (int i=0; i < springCount; i++) {
       if(springs[i].over()) {
         springs[i].pressed();
-//        System.out.println(springs[i].getPhotogroup().photos);
-      } else {
-        springs[i].hardRelease();
       }
+//      else {
+//        springs[i].hardRelease();
+//      }
     }
   }
 
   void processMouseReleased(float mx, float my) { 
     for (int i=0; i < springCount; i++) {
-//      if(springs[i].over()) 
-      springs[i].released();
+        springs[i].released();
     }
   }
 
@@ -169,7 +168,6 @@ class FECircleGraphic extends FEGraphic
   Vector photos = null;
   boolean releasephotos = false;
   boolean showphotos = false;
-  public float tempxpos, tempypos;
   
   FECircleGraphic(float aradius) { 
     this.radius = aradius; 
@@ -182,7 +180,21 @@ class FECircleGraphic extends FEGraphic
       if (mytag != null) {
         fill(getTagColor(mytag.getTagName()),0.5);
         stroke(getTagColor(mytag.getTagName()), 0.5);
-        line(tempxpos, tempypos, xpos, ypos);
+        if (mousedown) {
+          line(originx, originy, xpos, ypos);
+
+//          line(originx, originy, xpos, ypos+(this.radius/2));
+//          line(originx, originy, xpos, ypos-(this.radius/2));
+
+//          stroke(1);
+//          if( xpos > originx ) arc(xpos, ypos, this.radius, this.radius, -PI/2, PI/2);
+//          if( xpos < originx ) arc(xpos, ypos, this.radius, this.radius, PI/2, TWO_PI-PI/2);
+          noStroke();
+          fill(getTagColor(mytag.getTagName()),1.0);
+          ellipse(originx, originy, 4, 4);      
+          fill(getTagColor(mytag.getTagName()),0.5);
+          stroke(getTagColor(mytag.getTagName()), 0.5);
+        }
       }
     }
     else {
@@ -333,7 +345,11 @@ class FEPhotoGraphic extends FEGraphic {
           // loaded successfully
           if( over() ) { 
             noFill(); 
-            stroke(1.0, 1.0, 1.0, 0.8); 
+            if( !mousedown) {
+              stroke(1.0, 1.0, 1.0, 0.8); 
+            } else {
+              stroke(1.0, 0.0, 0.0, 0.8); 
+            }
             strokeWeight(12.0);
             strokeJoin(ROUND);
             rect(xpos-(iw/2)-3, ypos-(ih/2)-3, iw+6, ih+6); 
