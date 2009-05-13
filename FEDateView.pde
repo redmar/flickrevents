@@ -6,6 +6,11 @@ class FEDateView extends Observable {
   PFont font;
   boolean debug = false;
   
+  // min : 28 maart 2009
+  // max : 27 april 2009
+  GregorianCalendar min_date = new GregorianCalendar(2009, 2, 28);
+  GregorianCalendar max_date = new GregorianCalendar(2009, 3, 27);
+  
   GregorianCalendar calendar;
 
   // used for date skipping
@@ -28,7 +33,7 @@ class FEDateView extends Observable {
   }
   
   void initDateView() {
-    calendar = new GregorianCalendar(2009, 3, 27);
+    calendar = new GregorianCalendar(2009, 2, 30);
     log("Setting up calender to: " + currentFullDateString());
     log("Setting up calender to date: " + currentDate());
   }
@@ -54,7 +59,7 @@ class FEDateView extends Observable {
   String currentFullDateString() {
     return currentDayString() + " " + currentMonthString() + " " + currentYearString();
   }
-  
+    
   void setCurrentDate(Date date){
     calendar.setTime(date);
     setChanged();
@@ -64,34 +69,40 @@ class FEDateView extends Observable {
   void gotoPrevDay() { gotoDay(-1); }
   void gotoNextDay() { gotoDay(1);  }
   void gotoDay(int count) {
-    current_time = millis();
-    
-    if (current_time - last_time < 500) {
-      if(current_time - start_time > 6000) { 
-        calendar_type = Calendar.YEAR;
-        amount = amount + 0.05;
-      }
-      else if(current_time - start_time > 2000) {
-        calendar_type = Calendar.MONTH;
-        amount = amount + 0.05;
-      }
-      else {  // normal date 
-       amount = 1.0; 
-      }
-    }
-    else {
-      start_time = current_time;
-      calendar_type = Calendar.DATE;
-      amount = 1.0;
-    }
-    if ( Math.round(amount) > 0.999) { 
-       calendar.add(calendar_type, count);  
+//    current_time = millis();
+//    
+//    if (current_time - last_time < 500) {
+//      if(current_time - start_time > 6000) { 
+//        calendar_type = Calendar.YEAR;
+//        amount = amount + 0.05;
+//      }
+//      else if(current_time - start_time > 2000) {
+//        calendar_type = Calendar.MONTH;
+//        amount = amount + 0.05;
+//      }
+//      else {  // normal date 
+//       amount = 1.0; 
+//      }
+//    }
+//    else {
+//      start_time = current_time;
+//      calendar_type = Calendar.DATE;
+//      amount = 1.0;
+//    }
+//    if ( Math.round(amount) > 0.999) { 
+
+      GregorianCalendar tmp_calendar = new GregorianCalendar();
+      tmp_calendar.setTime(calendar.getTime());
+      tmp_calendar.add(calendar_type, count);
+//      calendar.add(calendar_type, count);
+      if( ( tmp_calendar.getTime().compareTo(max_date.getTime()) <= 0) &&
+          ( tmp_calendar.getTime().compareTo(min_date.getTime()) >= 0)) { calendar.add(calendar_type, count); }
        setChanged();
-       notifyObservers();
-       amount = 0;
-    }
+//       notifyObservers();
+//       amount = 0;
+//    }
     notifyObservers(currentDate());
-    last_time = current_time;
+//    last_time = current_time;
   }
 
   void render(){
