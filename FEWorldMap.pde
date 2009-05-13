@@ -40,6 +40,13 @@ class FEWorldMap implements Observer {
       // create new photogroup and put this image in it!
       FEPhotoGroup newPhotoGroup = new FEPhotoGroup();
       newPhotoGroup.setTagname(tagname);
+
+      if(tagname.equals("rock")) rock_count++; 
+      if(tagname.equals("classic")) classic_count++;
+      if(tagname.equals("trance")) trance_count++;
+      if(tagname.equals("pop")) pop_count++;
+      if(tagname.equals("jazz")) jazz_count++;
+            
       newPhotoGroup.addPhoto(p);
       photoGroups.add(newPhotoGroup);
     }
@@ -49,11 +56,17 @@ class FEWorldMap implements Observer {
   void loadDay() {
     if(currentDay == null) return;
     photoGroups = new Vector();
-    int groupidx = 0;
+    int groupidx = 0;  
+    rock_count = 0;
+    classic_count = 0;
+    trance_count = 0;
+    pop_count = 0;
+    jazz_count = 0;
     
     String[] tagOrder = {"rock","classic","trance","pop","jazz"};
     for(int i = 0; i < tagOrder.length; i++){
         FETag tag = currentDay.getTag(tagOrder[i]);
+        
         for(int idx = 0; idx < tag.size(); idx++){
           FEFlickrPhoto tmpPhoto = ((FEFlickrPhoto)tag.get(idx));
           addPhoto( tmpPhoto, tag.getTagName() );
@@ -63,11 +76,8 @@ class FEWorldMap implements Observer {
   
   void processMousePressed(float mx, float my) { 
     for (int i=0; i < springCount; i++) {
-      if(springs[i].over()) {
+//      if(springs[i].over()) {
         springs[i].pressed();
-      }
-//      else {
-//        springs[i].hardRelease();
 //      }
     }
   }
@@ -120,11 +130,13 @@ class FEWorldMap implements Observer {
     }
 
     for(int i=0; i < springCount; i++) {
-      if( springs[i].getPhotogroup() != null && 
-          selectedTags.contains(springs[i].getPhotogroup().tagname) ) {
+      if( selectedSpring == springs[i]) continue; // skip the 'open' bubble and render it later...
+      if( springs[i].getPhotogroup() != null && selectedTags.contains(springs[i].getPhotogroup().tagname) ) {
           springs[i].display();
       }
     }
+    // render the open bubble here (as last one)
+    if( selectedSpring != null && selectedSpring.getPhotogroup() != null && selectedTags.contains(selectedSpring.getPhotogroup().tagname) )  selectedSpring.display();
   }
   
   void renderGeoPoint(float longitude_x, float latitude_y) 
@@ -180,6 +192,7 @@ class FECircleGraphic extends FEGraphic
       if (mytag != null) {
         fill(getTagColor(mytag.getTagName()),0.5);
         stroke(getTagColor(mytag.getTagName()), 0.5);
+                
         if (mousedown) {
           line(originx, originy, xpos, ypos);
 
@@ -203,6 +216,12 @@ class FECircleGraphic extends FEGraphic
         stroke(getTagColor(mytag.getTagName()), 0.8);
       }
     }
+
+    for(int i=0; i< max_photos(); i++) {
+      position photo_pos = ((FESpring)photos.get(i)).position();
+      line(photo_pos.x, photo_pos.y, xpos, ypos);
+    }
+
     ellipseMode(CENTER_DIAMETER);
 //    ellipseMode(CENTER);
     ellipse(xpos, ypos, this.radius, this.radius);      
@@ -224,6 +243,24 @@ class FECircleGraphic extends FEGraphic
     }
     else {
       releasePhotos();
+    }
+  }
+  
+  void setMouseDown(boolean down) { 
+    mousedown = down;
+    if(showphotos) {
+      for(int i=0; i< max_photos(); i++) {
+        FESpring currentSpring = ((FESpring)photos.get(i));
+
+        //  ((FESpring)photos.get(i)).displayFunctor.setMouseDown(down);
+
+        if(down) {
+          currentSpring.pressed();
+        }
+        else {
+          currentSpring.released();      
+        }
+      }
     }
   }
       
@@ -268,8 +305,11 @@ class FECircleGraphic extends FEGraphic
   }
   
   int max_photos() {
+    if(photos == null) return 0; 
     // should be photos.size() if you want to see ALL photos!
-    return min(12,photoGroup.getPhotoCount());
+    // min(0,min(12,0) = 0
+    // min(40,min(12,40) = 12
+    return min(photoGroup.getPhotoCount(), min(12, photoGroup.getPhotoCount()));
   }
   
   void initPhotos() {
@@ -329,6 +369,7 @@ class FEPhotoGraphic extends FEGraphic {
     flickrPhoto = p;
     this.myspring = myspring;
     setFlickrURL(flickrPhoto.getFlickrURL("t"));
+//    setFlickrURL(flickrPhoto.getFlickrURL());
   }
   
   boolean mouseover;
@@ -345,7 +386,7 @@ class FEPhotoGraphic extends FEGraphic {
           // loaded successfully
           if( over() ) { 
             noFill(); 
-            if( !mousedown) {
+            if( !mousedown ) {
               stroke(1.0, 1.0, 1.0, 0.8); 
             } else {
               stroke(1.0, 0.0, 0.0, 0.8); 

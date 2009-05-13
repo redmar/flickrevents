@@ -135,7 +135,20 @@ class CheckBox extends Button
     rect(x,y,w,h);
     fill(1);
     textFont(font, h);
-    text(label, x + w + 5, y+h);
+    
+    if(label.equals("rock")) 
+      text(label + "\t\t ("+rock_count+")", x + w + 5, y+h);
+    if(label.equals("classic")) 
+      text(label + "\t\t ("+classic_count+")", x + w + 5, y+h);
+    if(label.equals("trance")) 
+      text(label + "\t\t ("+trance_count+")", x + w + 5, y+h);
+    if(label.equals("pop")) 
+      text(label + "\t\t ("+pop_count+")", x + w + 5, y+h);
+    if(label.equals("jazz")) 
+      text(label + "\t\t ("+jazz_count+")", x + w + 5, y+h);
+    else 
+      text(label, x + w + 5, y+h);
+    
     if (checked){
       noStroke();
       fill(selectedColor,0.5);

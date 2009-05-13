@@ -125,7 +125,7 @@ class FEGui implements Observer
     
     //Filter CheckBoxes
     textFont(font, 20);
-    text("Filter Tags", textX, height - 240);
+    text("Filter Tags" + "  (" + (rock_count+classic_count+trance_count+pop_count+jazz_count)+")", textX, height - 240);
     int checkBoxX = textX;
     int checkBoxY = height - 230;
     for(int i = 0; i < checkBoxes.size(); i++){

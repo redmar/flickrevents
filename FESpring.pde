@@ -30,7 +30,7 @@ class FESpring
   float vely = 0.0;   // Y Velocity 
   float accel = 0;    // Acceleration 
   float force = 0;    // Force 
-  FEGraphic displayFunctor = null;
+  public FEGraphic displayFunctor = null;
   FESpring[] springphotos = null;
   int springphotosCount = 0;
   FESpring[] friends;
@@ -190,10 +190,17 @@ class FESpring
   { 
     int deltaClick = millis() - clickTime;
 
-    if (over && deltaClick < 200) { 
+    if(over && deltaClick < 200) { 
       if(associated_photogroup!=null) { 
          showPhotos = !showPhotos; 
-         if (displayFunctor != null) displayFunctor.setShowPhotos(showPhotos);
+         if(displayFunctor != null) {
+           displayFunctor.setShowPhotos(showPhotos);
+           if(showPhotos) {
+             if(selectedSpring != null) selectedSpring.hardRelease();
+             selectedSpring = this;
+           }
+           if(!showPhotos && selectedSpring == this) selectedSpring = null;
+         }
       }
     }
     move = false; 
