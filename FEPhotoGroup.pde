@@ -54,7 +54,7 @@ class FEPhotoGroup {
   }
   
   boolean is_inside(float latitude, float longitude) {
-    return dist(x, y, latitude, longitude) < 0.005 ;  
+    return dist(x, y, latitude, longitude) < 0.5 ; // 0.005  
   }
   
   void render() {

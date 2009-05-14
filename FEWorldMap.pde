@@ -316,15 +316,35 @@ class FECircleGraphic extends FEGraphic
     releasephotos = false;
 //    photos = new Vector(photoGroup.getPhotoCount());
     photos = new Vector(max_photos());
+    
+    // sort photogroup photos
+    if (max_photos() > 1) {
+//      Comparator comparator = Collections.reverseOrder();
+      Collections.sort(photoGroup.photos /*, comparator*/);
+    }
+    
     for(int i=0; i<max_photos(); i++) {
-      FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i);
+      FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i); // pak een getal tussen 0 en photoGroup.getPhotoCount()
       FESpring newSpring = new FESpring(x+random(50)-25, y+random(50)-25, 1.0, 0.80, 10, 0.9, null, 0);
       FEPhotoGraphic pgraphic = new FEPhotoGraphic(p,newSpring);
       newSpring.setDisplayFunctor(pgraphic);
       photos.add((Object)newSpring);
-    }
-    
+    }    
   }
+
+//  void initPhotos() {
+//    releasephotos = false;
+////    photos = new Vector(photoGroup.getPhotoCount());
+//    photos = new Vector(max_photos());
+//    for(int i=0; i<max_photos(); i++) {
+//      FEFlickrPhoto p = (FEFlickrPhoto)photoGroup.photos.get(i); // pak een getal tussen 0 en photoGroup.getPhotoCount()
+//      FESpring newSpring = new FESpring(x+random(50)-25, y+random(50)-25, 1.0, 0.80, 10, 0.9, null, 0);
+//      FEPhotoGraphic pgraphic = new FEPhotoGraphic(p,newSpring);
+//      newSpring.setDisplayFunctor(pgraphic);
+//      photos.add((Object)newSpring);
+//    }    
+//  }
+
   
   void setRadius(float asize) 
   {

@@ -109,6 +109,7 @@ void draw() {
   dateView.render();
 
   if(fullscreenImage != null && fullscreenImage.width > 1) {
+    noStroke();
     fill(0.0, 0.0, 0.0, 0.15);
     rect(0,0,width,height);
     imageMode(CENTER);

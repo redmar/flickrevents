@@ -166,7 +166,7 @@ class FETag extends ArrayList
 
 }
 
-class FEFlickrPhoto
+class FEFlickrPhoto implements Comparable
 {
   String id;
   String owner;
@@ -241,5 +241,7 @@ class FEFlickrPhoto
     if(mstb == null) return getFlickrURL();
     return "http://farm" + farm + ".static.flickr.com/" + server + "/" + id + "_" + secret + "_"+mstb+".jpg";
   }
-
+  int compareTo(Object o) {
+    return round(random(2) - 1);
+  }
 }

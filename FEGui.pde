@@ -77,17 +77,17 @@ class FEGui implements Observer
     textY += 20;
     textFont(font, 12);
     for(int i = 0; i < topUsers.size() && i < 10; i++){
-      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1.0,0,0); }
-
-      text((i+1) + ".", textX, textY);
       String ownerName = ((String)topUsers.get(i)).split(":")[1];
       String owner = ((String)topUsers.get(i)).split(":")[0];
+      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ownerName)) { fill(1.0,0,0); }
+
+      text((i+1) + ".", textX, textY);
       text(ownerName, textX + 25, textY);
       Link link = (Link) userLinks.get(i);
       link.update(textX + 25, textY -15, 200, 15, "http://www.flickr.com/photos/"+owner);
       textY += 15;
 
-      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ((String)topUsers.get(i)) ) ) { fill(1); }
+      if( selectedPhoto != null && selectedPhoto.getOwnerName().equals( ownerName )) { fill(1); }
     }
     
     //Tags
