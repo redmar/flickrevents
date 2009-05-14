@@ -62,6 +62,7 @@ class FEDateView extends Observable {
     
   void setCurrentDate(Date date){
     calendar.setTime(date);
+    scattered = false;
     setChanged();
     notifyObservers();
   }
@@ -69,6 +70,7 @@ class FEDateView extends Observable {
   void gotoPrevDay() { gotoDay(-1); }
   void gotoNextDay() { gotoDay(1);  }
   void gotoDay(int count) {
+    scattered = false;
 //    current_time = millis();
 //    
 //    if (current_time - last_time < 500) {

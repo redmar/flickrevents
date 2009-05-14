@@ -188,12 +188,12 @@ class FECircleGraphic extends FEGraphic
   void display(float xpos, float ypos) {
     this.x = xpos; this.y = ypos;
     noStroke();
-    if (mouseover) {
+    if (mouseover || scattered) {
       if (mytag != null) {
         fill(getTagColor(mytag.getTagName()),0.5);
         stroke(getTagColor(mytag.getTagName()), 0.5);
                 
-        if (mousedown) {
+        if (mousedown || scattered) {
           line(originx, originy, xpos, ypos);
 
 //          line(originx, originy, xpos, ypos+(this.radius/2));

@@ -15,7 +15,7 @@ int trance_count = 0;
 int pop_count = 0;
 int jazz_count = 0;
 //////////////////////////////////////
-
+boolean scattered = false;
 FETimeLine fe_timeline;  
 FEWorldMap fe_worldmap;
 FEPhotoGroup pg;  //tmp
@@ -143,7 +143,10 @@ void keyPressed(){
         float oldy = springs[i].rest_posy;
         float nx = oldx + random(100) - 50;
         float ny = oldy + random(100) - 50;
-        springs[i].setPosition(nx, ny);
+        //springs[i].setPosition(nx, ny);
+        springs[i].rest_posx = nx;
+        springs[i].rest_posy = ny;
+        scattered = true;
         springs[i].setTempPosition(oldx, oldy);
         //springs[i].setRadius(3 + random(200));
       }
