@@ -9,6 +9,7 @@ ArrayList tagFilter = new ArrayList(Arrays.asList(unwantedTags));
 ArrayList tagsForSelectedPhoto = new ArrayList();
 FEFlickrPhoto selectedPhoto = null;
 FESpring selectedSpring = null;
+PImage fullscreenImage = null;
 int rock_count = 0;
 int classic_count = 0;
 int trance_count = 0;
@@ -106,6 +107,22 @@ void draw() {
   
   dateView.step();
   dateView.render();
+
+  if(fullscreenImage != null && fullscreenImage.width > 1) {
+    fill(0.0, 0.0, 0.0, 0.15);
+    rect(0,0,width,height);
+    imageMode(CENTER);
+    image(fullscreenImage, width/2, height/2);
+  }
+
+//  if( selectedPhoto != null && selectedSpring != null) {
+//    ((FEPhotoGraphic)selectedSpring.displayFunctor).setFlickrURL(selectedPhoto.getFlickrURL());
+//
+//    float oldx = selectedSpring.rest_posx; 
+//    float oldy = selectedSpring.rest_posy;
+//    selectedSpring.setPosition(width/2, height/2);
+//    selectedSpring.setTempPosition(oldx, oldy);
+//  }
 }
 
 void mousePressed() {
