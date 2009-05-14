@@ -358,23 +358,41 @@ class FECircleGraphic extends FEGraphic
 
 class FEPhotoGraphic extends FEGraphic {
   public PImage original_img;
+  public PImage full_img;
+  boolean fullscreen = false;
   FEFlickrPhoto flickrPhoto = null;
   String farm_id, server_id, id, secret;
   String flickr_url = "";
+  String full_flickr_url = "";
   float iw = -1; float ih = -1;
   float xpos, ypos;
   FESpring myspring = null;
+  boolean mouseover;
   
   FEPhotoGraphic(FEFlickrPhoto p, FESpring myspring) {
     flickrPhoto = p;
     this.myspring = myspring;
     setFlickrURL(flickrPhoto.getFlickrURL("t"));
-//    setFlickrURL(flickrPhoto.getFlickrURL());
-  }
+    setFullFlickrURL(flickrPhoto.getFlickrURL());
+  }  
   
-  boolean mouseover;
   void display(float xpos, float ypos) {
     this.xpos = xpos; this.ypos = ypos;
+    if( fullscreen ) {
+      if( full_img != null ) {
+        switch(original_img.width) {
+          case 0: 
+            break;
+          case -1: return; // show nothing when in error!
+          default: 
+            if(mousedown && over()) { fullscreenImage = null; fullscreen = false; return; }            
+            fullscreenImage = full_img;
+//            imageMode(CENTER);
+//            image(full_img, width/2, height/2);
+        }
+      }
+      return;
+    }
     if( original_img != null ) {
       switch(original_img.width) {
         case 0: 
@@ -389,6 +407,8 @@ class FEPhotoGraphic extends FEGraphic {
             if( !mousedown ) {
               stroke(1.0, 1.0, 1.0, 0.8); 
             } else {
+              // clicked
+              fullscreen = !fullscreen;
               stroke(1.0, 0.0, 0.0, 0.8); 
             }
             strokeWeight(12.0);
@@ -445,7 +465,10 @@ class FEPhotoGraphic extends FEGraphic {
   }
   
   void displayPhotos() { };
+  
   boolean over() { 
+    if( fullscreen ) { return full_over(); }
+    
     if( (mouseX > (xpos - (iw/2))) && 
         (mouseX < (xpos + (iw/2))) &&
         (mouseY > (ypos - (ih/2))) &&
@@ -456,10 +479,29 @@ class FEPhotoGraphic extends FEGraphic {
       return false;
     }
   }
+
+  boolean full_over() { 
+    if( full_img == null || full_img.width < 1) { return false; } // error occurred while loading
+    if( (mouseX > ((width/2) - (full_img.width/2))) && 
+        (mouseX < ((width/2) + (full_img.width/2))) &&
+        (mouseY > ((height/2) - (full_img.height/2))) &&
+        (mouseY < ((height/2) + (full_img.height/2))) ) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   
   void setFlickrURL(String url) { 
     this.flickr_url = url;
     this.original_img = requestImage(this.flickr_url);
+  }
+
+  void setFullFlickrURL(String url) { 
+    this.full_flickr_url = url;
+    this.full_img = requestImage(this.full_flickr_url);
   }
 
   void setFlickrURL(String farm_id, String server_id, String id, String secret) {
